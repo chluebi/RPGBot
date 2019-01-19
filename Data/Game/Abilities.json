@@ -1,0 +1,18 @@
+{
+	"strike":{
+		"description":"Hits the Enemy with a small blow.",
+		"target":["enemy",1],
+		"damage":[10,0.5],
+		"magic_damage":[0,0],
+		"cooldown":0,
+		"effects":[]
+	},
+	"smash":{
+		"description":"Heavy Attack to finish off enemies.",
+		"target":["enemy",1],
+		"damage":[20,0.8],
+		"magic_damage":[0,0],
+		"cooldown":2,
+		"effects":[]
+	}
+}

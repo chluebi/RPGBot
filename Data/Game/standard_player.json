@@ -1,0 +1,28 @@
+{
+    "name": "name#0001",
+    "id": 0,
+    "status": [
+        "creator",
+        0
+    ],
+    "level":0,
+    "xp":0,
+    "stats": {
+    	"strength":10,
+    	"intelligence":10,
+    	"defense":10,
+    	"magic_defense":10
+    },
+    "inventory": [
+    ],
+    "equipped": {
+    	"head":0,
+    	"chest":0,
+    	"legs":0,
+    	"feet":0,
+    	"weapon1":0,
+    	"weapon2":0
+    },
+    "abilities": [
+    ]
+}
