@@ -20,10 +20,6 @@ async def execute(par, msg):
         await cha.send(embed=formatting.help())
         return
 
-    if par[0] == 'someshit':
-        print(get_user(184682395553759233))
-        return
-
     if player == None:
         if par[0] == 'join':
             player = new_user(msg.author)
@@ -46,6 +42,7 @@ async def execute(par, msg):
 
 
 async def answer(par, msg):
+    cha = msg.channel
     if GET.player(msg.author.id) is None:
         return
     print('ans')

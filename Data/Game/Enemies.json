@@ -8,8 +8,8 @@
 		"stats": {
 	    	"strength":[10,1],
 	    	"intelligence":[0,0],
-	    	"defense":[8,0.8],
-	    	"magic_defense":[7,0.7]
+	    	"defense":[8,2],
+	    	"magic_defense":[7,2]
     	}
 	}
 }

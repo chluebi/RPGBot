@@ -10,18 +10,15 @@ import commands
 client = discord.Client()
 
 
-def get_user(id):
-    return client.get_user(id)
-
-
 if __name__ == '__main__':
-    users = User.load_all()
 
     @client.event
     async def on_ready():
         print('bot ready')
         game = discord.Game('{}info'.format(Tokens.prefix()))
         await client.change_presence(status=discord.Status.online, activity=game)
+        core.clientusers = client.users
+        users = User.load_all()
 
     @client.event
     async def on_message(message):

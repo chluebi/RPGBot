@@ -1,5 +1,6 @@
 import json
 
+clientusers = []
 users = []
 battles = []
 
@@ -73,5 +74,13 @@ class GET:
         for battle in battles:
             if battle.id == identifier:
                 return battle
+
+        return None
+
+    @staticmethod
+    def clientuser(identifier):
+        for user in clientusers:
+            if user.id == identifier:
+                return user
 
         return None

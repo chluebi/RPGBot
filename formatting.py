@@ -54,22 +54,49 @@ def numerate(array):
     return finished
 
 
+def alphabet(array):
+    abc = 'abcdefghijklmnopqrstuvwxyz'
+    finished = []
+    i = 0
+    for name in array:
+        finished.append('``{}``   {}'.format(abc[i], name))
+        i += 1
+
+    finished = '\n'.join(finished)
+
+    return finished
+
+
 class Battleembed:
 
-    def player_turn(player, side):
+    def player_turn(player, allyside, enemyside):
 
         abilities = player.abilities
         embed = Embed(title='Battle', description='{}info <thing> to get more info'.format(prefix + prefix), color=0x00fff3)
+        allies = allyside
+        allies = ['{}({}hp)'.format(ally.name, ally.health) if ally.health > 0 else '~~{}~~'.format(ally.name) for ally in allies]
+        embed.add_field(name='{}use'.format(prefix + prefix), value=alphabet(allies), inline=True)
         abilities = ['{}'.format(ability[0]) if ability[1] < 1 else '~~{}({}cd)~~'.format(ability[0], ability[1]) for ability in abilities]
-        embed.add_field(name='{}use <ability>'.format(prefix + prefix), value=numerate(abilities), inline=True)
+        embed.add_field(name='<ability>', value=numerate(abilities), inline=True)
 
-        enemies = side
+        enemies = enemyside
         enemies = ['{}({}hp)'.format(enemy.name, enemy.health) if enemy.health > 0 else '~~{}~~'.format(enemy.name) for enemy in enemies]
         embed.add_field(name='<target>', value=numerate(enemies), inline=True)
 
         return embed
 
+    def ability(ability, target, attacker, damage, mdamage, hbefore):
+        print(damage)
+        print(mdamage)
+        print(target.health)
+        embed = Embed(title='Battle Event', description='{} used {} on {}'.format(attacker.name, ability[0], target.name), color=0x00fff3)
+        before = hbefore
+        string = '{} - **{}** - *{}* = {}'.format(before, damage, mdamage, target.health)
+        embed.add_field(name='Damage', value=string, inline=True)
+        if len(ability[1]['effects']) > 0:
+            embed.add_field(name='Effects', value=['{} - {} turns'.format(effect, length) for effect, length in ability[1]['effects']], inline=True)
 
-    def ability(abiltiy, target, attacker, damage, mdamage):
-        embed = Embed(title='Battle Event', description='{} used {} on {}'.format(prefix + prefix), color=0x00fff3)
+        return embed
 
+    def show():
+        pass

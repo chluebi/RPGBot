@@ -2,15 +2,15 @@ import json
 import os
 import core
 from core import Parsing
-from main import get_user
+from core import GET
 
 
 def dict_to_obj(data, obj):
     for name, key in data.items():
         if isinstance(key, (list, tuple)):
-            setattr(obj, name, [x if isinstance(x, dict) else x for x in key])
+            setattr(obj, name, [x if isinstance(x, dict) else x for x in key].copy())
         else:
-            setattr(obj, name, key if isinstance(key, dict) else key)
+            setattr(obj, name, key.copy() if isinstance(key, dict) else key)
 
 
 class User:
@@ -37,7 +37,7 @@ class User:
 
             dict_to_obj(data, self)
             self.save_self()
-        self.user = get_user(self.id)
+        self.user = GET.clientuser(self.id)
         print(self.__dict__)
 
         core.users.append(self)
