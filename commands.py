@@ -9,7 +9,6 @@ import discord
 
 
 async def execute(par, msg):
-    print('ex')
     cha = msg.channel
     player = GET.player(msg.author.id)
 
@@ -19,6 +18,10 @@ async def execute(par, msg):
 
     if par[0] == 'help':
         await cha.send(embed=formatting.help())
+        return
+
+    if par[0] == 'someshit':
+        print(get_user(184682395553759233))
         return
 
     if player == None:
@@ -51,4 +54,5 @@ async def answer(par, msg):
         await character_creation(par, msg, player)
     if player.status[0] == 'battle':
         battle = GET.battle(player.status[1])
-        await battle.player_turn(par, msg, player)
+        if battle.channel == cha:
+            await battle.player_turn(par, msg, player)

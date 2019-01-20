@@ -7,10 +7,15 @@ from core import Tokens
 from files import User
 import commands
 
+client = discord.Client()
+
+
+def get_user(id):
+    return client.get_user(id)
+
 
 if __name__ == '__main__':
     users = User.load_all()
-    client = discord.Client()
 
     @client.event
     async def on_ready():

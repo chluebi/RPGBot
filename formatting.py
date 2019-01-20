@@ -65,6 +65,11 @@ class Battleembed:
 
         enemies = side
         enemies = ['{}({}hp)'.format(enemy.name, enemy.health) if enemy.health > 0 else '~~{}~~'.format(enemy.name) for enemy in enemies]
-        embed.add_field(name='<enemy>', value=numerate(enemies), inline=True)
+        embed.add_field(name='<target>', value=numerate(enemies), inline=True)
 
         return embed
+
+
+    def ability(abiltiy, target, attacker, damage, mdamage):
+        embed = Embed(title='Battle Event', description='{} used {} on {}'.format(prefix + prefix), color=0x00fff3)
+

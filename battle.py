@@ -84,6 +84,19 @@ class Battle:
         if win is True:
             return 1
 
+    @staticmethod
+    def cast_ability(ability, target, attacker):
+        damage = ability['damage'][0] + attacker.stats['strength'] * ability['damage'][1]
+        target.health -= damage * (100 / 100 + target.stats['defense'])
+
+        magic_damage = ability['magic_damage'][0] + attacker.stats['intelligence'] * ability['magic_damage'][1]
+        target.health -= magic_damage * (100 / 100 + target.stats['magic_defense'])
+
+        for effect, duration in ability['effects']:
+            target.effects.append((effect, duration))
+
+        return Battleembed.ability(ability, target, attacker, damage, magic_damage)
+
     async def wait_for_player(self, cha):
         await cha.send(embed=bembed.player_turn(self.side1[0], self.side2))
         turn = self.turn
@@ -103,7 +116,7 @@ class Battle:
             pass
 
         if par[0] == 'use':
-            await playeringame.use_ability(par, msg)
+            await playeringame.use_ability(self, 1, par, msg)
 
     def enemy_turn():
         pass
@@ -119,7 +132,49 @@ class Player:
             item = (abi, abilitydata[abi]['cooldown'])
             self.abilities.append(item)
 
+        self.effects = []
+        self.name = self.user.mention
         print(self.__dict__)
+
+    def use_ability(battle, side, par, msg):
+        if side == 1:
+            allyside = [ally for ally in battle.side1 if ally.health > 0]
+            enemyside = [enemy for enemy in enemy.side2 if enemy.health > 0]
+        else:
+            allyside = [ally for ally in battle.side2 if ally.health > 0]
+            enemyside = [enemy for enemy in enemy.side1 if enemy.health > 0]
+
+        ability = par[1]
+        try:
+            ability = abilitydata[Player.abilities[par[1]][0]]
+        except Exception:
+            msg.channel.send('not a valid ability')
+
+        if Player.abilities[par[1]][1] > 0:
+            msg.channel.send('ability on cooldown')
+
+        target = ability['target'][0]
+
+        if target == 'enemy':
+            if len(enemyside) < 2:
+                target = enemyside[0]
+            else:
+                try:
+                    target = enemyside[par[2]]
+                except Exception:
+                    msg.channel.send('not a valid target')
+        elif target == 'ally':
+            pass
+        elif target == 'enemy_all':
+            pass
+        elif target == 'ally_all':
+            pass
+        elif target == 'all':
+            pass
+        else:
+            raise Exception('Ability doesnt have good target')
+
+        Battle.cast_ability(ability, target, self)
 
 
 class Enemy:
@@ -136,6 +191,7 @@ class Enemy:
             raise Exception('Enemy type does not exist')
         self.health = self.health[0] + self.health[1] * level
         self.heatlh = round(self.health)
+        self.effects = []
 
         print(self.__dict__)
 

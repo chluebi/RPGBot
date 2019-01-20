@@ -2,6 +2,7 @@ import json
 import os
 import core
 from core import Parsing
+from main import get_user
 
 
 def dict_to_obj(data, obj):
@@ -35,8 +36,9 @@ class User:
                     data.pop(key)
 
             dict_to_obj(data, self)
-            print(self.__dict__)
             self.save_self()
+        self.user = get_user(self.id)
+        print(self.__dict__)
 
         core.users.append(self)
 
