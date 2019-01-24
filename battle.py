@@ -14,7 +14,7 @@ abilitydata = json.load(open(abilitypath))
 
 async def new_battle(par, msg, player):
     if player.status[0] == 'battle':
-        msg.channel.send('You already are in a battle!')
+        await msg.channel.send('You already are in a battle!')
         return
 
     if par[1] == 'tutorial':
@@ -97,6 +97,13 @@ class Battle:
         print(self.__dict__)
 
     def remove_self(self):
+        players = [player for player in self.side1 if player.isplayer == True]
+        players += [player for player in self.side2 if player.isplayer == True]
+
+        for player in players:
+            leaver = core.GET.player(player.id)
+            leaver.status = ['None']
+            leaver.save_self()
         i = 0
         for battle in core.battles:
             if battle.id == self.id:
@@ -172,6 +179,7 @@ class Battle:
         await self.channel.send(embed=bembed.abicomp(embeds))
         self.turn += 1
         await self.check_win()
+        self.update()
         await self.wait_for_player(self.channel)
 
     async def check_win(self):
@@ -203,6 +211,21 @@ class Battle:
             await self.lose()
             return
 
+    def update(self):
+        for char in self.side1:
+            print(char.abilities)
+            for abi in char.abilities:
+                if abi[1] == 1:
+                    abi[1] = 0
+                if abi[1] > 0:
+                    abi[1] -= int(abi[1]) - 1
+            print(char.abilities)
+        '''
+        for char in self.side2:
+            for abi in char.abilities:
+                abi[1] -= int(abi[1]) - 1
+        '''
+
     async def win(self):
         winners = [char for char in self.side1 if char.isplayer == True]
         for winner in winners:
@@ -223,10 +246,11 @@ class Player:
         abis = self.abilities.copy()
         self.abilities = []
         for abi in abis:
-            item = (abi, abilitydata[abi]['cooldown'])
+            item = [abi, abilitydata[abi]['cooldown']]
             self.abilities.append(item)
 
         self.effects = []
+        print(self.user)
         self.name = self.user.mention
         self.health = 100 + self.level * 20
         self.isplayer = True
@@ -267,10 +291,10 @@ class Player:
                 try:
                     target = enemyside[par[2]]
                 except Exception:
-                    msg.channel.send('not a valid target')
+                    await msg.channel.send('not a valid target')
                     return
                 if target == None:
-                    msg.channel.send('this character is already dead')
+                    await msg.channel.send('this character is already dead')
                     return
         elif target == 'ally':
             pass
@@ -283,7 +307,9 @@ class Player:
         else:
             raise Exception('Ability doesnt have good target')
 
-        ability = (self.abilities[par[1]][0], ability)
+        abilityname = self.abilities[par[1]][0]
+        ability = (abilityname, ability)
+        self.abilities[par[1]][1] = abilitydata[abilityname]['cooldown']
         return Battle.cast_ability(ability, target, self)
 
 

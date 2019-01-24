@@ -56,7 +56,8 @@ class User:
         return users
 
     def save_self(self):
-        file = self.__dict__
+        file_original = self.__dict__
+        file = file_original.copy()
         file['user'] = 0
         print(file)
         filename = os.path.join(User.playerpath, '{}.json'.format(self.name))
