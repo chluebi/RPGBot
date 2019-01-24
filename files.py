@@ -34,7 +34,6 @@ class User:
             for key in data.copy():
                 if key not in self.standard_player:
                     data.pop(key)
-
             dict_to_obj(data, self)
             self.save_self()
         self.user = GET.clientuser(self.id)
@@ -58,6 +57,7 @@ class User:
 
     def save_self(self):
         file = self.__dict__
+        file['user'] = 0
         print(file)
         filename = os.path.join(User.playerpath, '{}.json'.format(self.name))
         with open(filename, "w+") as write_file:
@@ -73,16 +73,20 @@ class User:
             i += 1
 
     def give_item(self, item, amount):
-        items = [itemx[0] for itemx in self.inventory]
-        amounts = [itemx[1] for itemx in self.inventory]
-        if item not in items:
-            self.inventory.append((item, amount))
+        if item not in self.inventory:
+            self.inventory[item] = amount
         else:
-            self.inventory[self.inventory.index(item)] += amount
+            self.inventory[item] += amount
+
+        return 'You have received ``{}`` of **{}**'.format(amount, item)
 
     def give_item_bulk(self, items):
+        endstring = ''
         for item, amount in items:
-            self.give_item(item, amount)
+            endstring += self.give_item(item, amount)
+            endstring += '\n'
+
+        return endstring
 
     def give_ability(self, ability):
         if ability not in self.abilities:

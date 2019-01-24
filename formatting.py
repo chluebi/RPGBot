@@ -85,18 +85,62 @@ class Battleembed:
 
         return embed
 
+    '''
     def ability(ability, target, attacker, damage, mdamage, hbefore):
-        print(damage)
-        print(mdamage)
-        print(target.health)
         embed = Embed(title='Battle Event', description='{} used {} on {}'.format(attacker.name, ability[0], target.name), color=0x00fff3)
         before = hbefore
         string = '{} - **{}** - *{}* = {}'.format(before, damage, mdamage, target.health)
-        embed.add_field(name='Damage', value=string, inline=True)
+        
         if len(ability[1]['effects']) > 0:
-            embed.add_field(name='Effects', value=['{} - {} turns'.format(effect, length) for effect, length in ability[1]['effects']], inline=True)
+            embed.add_field(name='Effects', value=['{} - {} turns'.format(effect, length) for effect, length in ability[1]['effects']].split('\n'), inline=True)
+
+        return embed
+    '''
+    def ability(ability, target, attacker, damage, mdamage, hbefore):
+        embed = Embed(title='Battle Event', description=Battleembed.abipart(ability, target, attacker, damage, mdamage, hbefore))
+        return embed
+
+    def abifinish(text):
+        embed = Embed(title='Battle Event', description=text)
+        return embed
+
+    def abipart(ability, target, attacker, damage, mdamage, hbefore):
+        before = hbefore
+        endstring = '{} used {} on {}'.format(attacker.name, ability[0], target.name)
+        endstring += '\n'
+        endstring += '{} - **{}** - *{}* = {}'.format(before, damage, mdamage, target.health)
+        if len(ability[1]['effects']) > 0:
+            endstring += '\n *Effects:* \n'
+            endstring += ', '.join(['{} - {} turns'.format(effect, length) for effect, length in ability[1]['effects']])
+
+        return endstring
+
+    def abicomp(abis):
+        endstring = ''
+        for abi in abis:
+            endstring += abi + '\n\n'
+        embed = Embed(title='Battle Event', description=endstring)
+        return embed
+
+    def show(allyside, enemyside):
+        embed = Embed(title='Battle', description='', color=0x00fff3)
+        allies = allyside
+        allies = ['{}({}hp)'.format(ally.name, ally.health) if ally.health > 0 else '~~{}~~'.format(ally.name) for ally in allies]
+        embed.add_field(name='allies', value='\n'.join(allies), inline=True)
+        enemies = enemyside
+        enemies = ['{}({}hp)'.format(enemy.name, enemy.health) if enemy.health > 0 else '~~{}~~'.format(enemy.name) for enemy in enemies]
+        embed.add_field(name='enemies', value='\n'.join(enemies), inline=True)
 
         return embed
 
-    def show():
-        pass
+    def dead(char):
+        return '{} has died'.format(char.name)
+
+    def win(battle, winners, loot):
+        embed = Embed(title='Battle won!', description=', '.join([winner.name for winner in winners]), color=0x00fff3)
+        embed.add_field(name='Loot', value=loot)
+        return embed
+
+    def lose(battle):
+        embed = Embed(title='Battle lost!', description='', color=0x00fff3)
+        return embed
