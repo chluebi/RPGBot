@@ -50,8 +50,8 @@ async def character_creation(par, msg, player):
             chosen = list(classes.keys())[chosen]
             await cha.send('You chose {}'.format(chosen))
             player.status = ['None']
-            player.give_starter(chosen)
-            player.give_item('gold', 100)
+            await player.give_starter(chosen)
+            await player.give_item('gold', 100)
             player.save_self()
             await asyncio.sleep(3)
             await cha.send('Character succesfully created!')

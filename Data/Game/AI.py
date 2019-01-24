@@ -1,3 +1,4 @@
+import random
 
 
 def choose_ability(battle, char):
@@ -16,3 +17,5 @@ def choose_ability(battle, char):
         target = min(enemyside, key=lambda enemy: enemy.health)
         abi = char.abilities[0]
         return (target, char.abilities[0])
+
+    return (random.choice(enemyside), random.choice(char.abilities))

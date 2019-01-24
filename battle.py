@@ -2,6 +2,7 @@ import json
 import core
 import random
 import asyncio
+import random
 from files import dict_to_obj
 from formatting import Battleembed as bembed
 
@@ -13,6 +14,9 @@ abilitydata = json.load(open(abilitypath))
 
 
 async def new_battle(par, msg, player):
+    battlepath = 'Data/Game/Battles.json'
+    data = json.load(open(battlepath))
+
     if player.status[0] == 'battle':
         await msg.channel.send('You already are in a battle!')
         return
@@ -20,15 +24,36 @@ async def new_battle(par, msg, player):
     if par[1] == 'tutorial':
         await Battles.start_battle('tutorial', player, msg.channel)
 
+    if par[1] in ['c', 'cave', 'cavelands']:
+        await Battles.start_battle('Cavelands', player, msg.channel)
+
 
 class Battles:
     battlepath = 'Data/Game/Battles.json'
-    data = json.load(open(battlepath))
+    data_original = json.load(open(battlepath))
 
     @staticmethod
     async def start_battle(name, player, cha):
-        if name in Battles.data:
-            battledata = Battles.data[name]
+        data = Battles.data_original.copy()
+        datapure = {}
+        for key, value in data.items():
+            for key2, value2 in value.items():
+                datapure[key2] = value2
+
+        chosen = name
+
+        if chosen == 'Cavelands':
+            battlelist = []
+            for key, value in data['Cavelands'].items():
+                if value['min_level'] <= player.level and value['min_level'] + 3 > player.level:
+                    for i in range(value['rarity']):
+                        battlelist.append(key)
+            print(battlelist)
+            chosen = random.choice(battlelist)
+            print(chosen)
+
+        if chosen in datapure:
+            battledata = datapure[chosen]
         else:
             raise Exception('Battle not found')
         battle = Battle(battledata, player, cha)
@@ -172,9 +197,10 @@ class Battle:
 
         embeds = []
         for enemy in self.side2:
-            text = await enemy.turn(self)
-            embeds.append(text)
-            asyncio.wait(1)
+            if enemy.alive:
+                text = await enemy.turn(self)
+                embeds.append(text)
+                asyncio.wait(1)
 
         await self.channel.send(embed=bembed.abicomp(embeds))
         self.turn += 1
@@ -230,7 +256,7 @@ class Battle:
         winners = [char for char in self.side1 if char.isplayer == True]
         for winner in winners:
             player = core.GET.player(winner.id)
-            loot = player.give_item_bulk(self.data['loot'])
+            loot = await player.give_item_bulk(self.data['loot'])
         await self.channel.send(embed=bembed.win(self, winners, loot))
         self.remove_self()
 

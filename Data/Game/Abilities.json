@@ -14,5 +14,37 @@
 		"magic_damage":[0,0],
 		"cooldown":2,
 		"effects":[]
+	},
+	"fireball": {
+		"description":"Yes it burns, thanks for asking",
+		"target":["enemy",1],
+		"damage":[0,0],
+		"magic_damage":[10,0.5],
+		"cooldown":0,
+		"effects":[]
+	},
+	"icecone": {
+		"description":"Everybody Freeze!",
+		"target":["enemy",1],
+		"damage":[0,0],
+		"magic_damage":[12,0.6],
+		"cooldown":1,
+		"effects":[]
+	},
+	"stomp": {
+		"description":"Terrorize your enemies with your feet",
+		"target":["enemy",1],
+		"damage":[15,0.5],
+		"magic_damage":[0,0],
+		"cooldown":1,
+		"effects":[]
+	},
+	"slimespit": {
+		"description":"Eeeeeeeeeeeeew",
+		"target":["enemy",1],
+		"damage":[0,0],
+		"magic_damage":[15,0.5],
+		"cooldown":0,
+		"effects":[]
 	}
 }

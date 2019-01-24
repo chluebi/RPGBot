@@ -73,7 +73,10 @@ class User:
                 core.users.pop(i)
             i += 1
 
-    def give_item(self, item, amount):
+    async def give_item(self, item, amount):
+        if item == 'xp':
+            await self.give_xp(amount)
+            return
         if item not in self.inventory:
             self.inventory[item] = amount
         else:
@@ -81,29 +84,42 @@ class User:
 
         return 'You have received ``{}`` of **{}**'.format(amount, item)
 
-    def give_item_bulk(self, items):
+    async def give_item_bulk(self, items):
         endstring = ''
         for item, amount in items:
-            endstring += self.give_item(item, amount)
+            endstring += await self.give_item(item, amount)
             endstring += '\n'
 
         return endstring
 
-    def give_ability(self, ability):
+    async def give_ability(self, ability):
         if ability not in self.abilities:
             self.abilities.append(ability)
         else:
             print('player already has ability')
 
-    def give_starter(self, chosen):
+    async def give_starter(self, chosen):
         if chosen in Parsing.classes:
             items = Parsing.classes[chosen]['starter_items']
             items = [(x, y) for x, y in items]
-            self.give_item_bulk(items)
+            await self.give_item_bulk(items)
             for ability in Parsing.classes[chosen]['starter_abilities']:
-                self.give_ability(ability)
+                await self.give_ability(ability)
         else:
             raise Exception('Class not found')
+
+    async def give_xp(self, amount):
+        self.xp += amount
+        xplimit = (self.level * 100) * (self.level)
+        while self.xp > xplimit:
+            xplimit = (self.level * 100) * (self.level)
+            await self.level_up()
+            self.xp -= xplimit
+
+    async def level_up(self):
+        self.level += 1
+        user = GET.clientuser(self.id)
+        await user.send('You levelled up! New level {}'.format(self.level))
 
 
 class Item:

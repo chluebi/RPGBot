@@ -1,14 +1,94 @@
 {
-	"tutorial": {
-		"rarity":0,
-		"min_level":-1,
-		"enemies":[
-			["goblin",0],
-			["goblin",0],
-			["goblin",0]
-		],
-		"loot":[
-			["gold",10]
-		]
+	"Basics": {
+		"tutorial": {
+			"rarity":0,
+			"min_level":-1,
+			"enemies":[
+				["goblin",0],
+				["goblin",0],
+				["goblin",0]
+			],
+			"loot":[
+				["gold",10],
+				["xp",120]
+			]
+		}
+	},
+	"Cavelands": {
+		"trollcave": {
+			"rarity":4,
+			"min_level":-1,
+			"enemies":[
+				["troll",0]
+			],
+			"loot":[
+				["gold",30],
+				["xp",50]
+			]
+		},
+		"greencave": {
+			"rarity":3,
+			"min_level":1,
+			"enemies":[
+				["troll",0],
+				["goblin",1],
+				["goblin",1]
+			],
+			"loot":[
+				["gold",40],
+				["xp",60]
+			]
+		},
+		"slimecave": {
+			"rarity":4,
+			"min_level":1,
+			"enemies":[
+				["slime",0],
+				["slime",0]
+			],
+			"loot":[
+				["gold",40],
+				["xp",60]
+			]
+		},
+		"cavehouse": {
+			"rarity":3,
+			"min_level":1,
+			"enemies":[
+				["slime",0],
+				["witch",0]
+			],
+			"loot":[
+				["gold",50],
+				["xp",70]
+			]
+		},
+		"monstercouple": {
+			"rarity":2,
+			"min_level":2,
+			"enemies":[
+				["troll",2],
+				["witch",1]
+			],
+			"loot":[
+				["gold",100],
+				["xp",150]
+			]
+		},
+		"smallarmy": {
+			"rarity":2,
+			"min_level":2,
+			"enemies":[
+				["goblin",0],
+				["goblin",0],
+				["goblin",0],
+				["goblin",0],
+				["goblin",0]
+			],
+			"loot":[
+				["gold",100],
+				["xp",150]
+			]
+		}
 	}
 }
