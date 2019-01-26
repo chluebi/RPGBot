@@ -1,0 +1,16 @@
+{
+	"description":"A weak cave creature.",
+	"health":[10,10],
+	"abilities": [
+		"strike"
+	],
+	"stats": {
+    	"strength":[3,1],
+    	"intelligence":[0,0],
+    	"defense":[8,2],
+    	"magic_defense":[7,2]
+	},
+	"drops": [
+		["gold",2]
+	]
+}

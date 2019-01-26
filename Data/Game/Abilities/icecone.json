@@ -1,0 +1,8 @@
+{
+	"description":"Everybody Freeze!",
+	"target":["enemy",1],
+	"damage":[0,0],
+	"magic_damage":[12,0.6],
+	"cooldown":1,
+	"effects":[]
+}

@@ -1,0 +1,12 @@
+{
+	"rarity":3,
+	"min_level":1,
+	"enemies":[
+		["slime",0],
+		["witch",0]
+	],
+	"loot":[
+		["gold",50],
+		["xp",70]
+	]
+}

@@ -69,10 +69,13 @@ def alphabet(array):
 
 class Battleembed:
 
-    def player_turn(player, allyside, enemyside):
+    def player_turn(player, allyside, enemyside, history):
 
         abilities = player.abilities
         embed = Embed(title='Battle', description='{}info <thing> to get more info'.format(prefix + prefix), color=0x00fff3)
+        if len(history) > 0:
+            amount = -min(5, len(history))
+            embed.add_field(name='History', value=Battleembed.links(history[amount:len(history)]), inline=False)
         allies = allyside
         allies = ['{}({}hp)'.format(ally.name, ally.health) if ally.health > 0 else '~~{}~~'.format(ally.name) for ally in allies]
         embed.add_field(name='{}use'.format(prefix + prefix), value=alphabet(allies), inline=True)
@@ -98,11 +101,11 @@ class Battleembed:
     '''
     def ability(ability, target, attacker, damage, mdamage, hbefore):
         embed = Embed(title='Battle Event', description=Battleembed.abipart(ability, target, attacker, damage, mdamage, hbefore))
-        return embed
+        return Battleembed.abipart(ability, target, attacker, damage, mdamage, hbefore)
 
     def abifinish(text):
         embed = Embed(title='Battle Event', description=text)
-        return embed
+        return text
 
     def abipart(ability, target, attacker, damage, mdamage, hbefore):
         before = hbefore
@@ -120,7 +123,14 @@ class Battleembed:
         for abi in abis:
             endstring += abi + '\n\n'
         embed = Embed(title='Battle Event', description=endstring)
-        return embed
+        return endstring
+
+    def deadcomp(abis):
+        endstring = ''
+        for abi in abis:
+            endstring += abi + '\n'
+        embed = Embed(title='Battle Event', description=endstring)
+        return endstring
 
     def show(allyside, enemyside):
         embed = Embed(title='Battle', description='', color=0x00fff3)
@@ -137,10 +147,28 @@ class Battleembed:
         return '{} has died'.format(char.name)
 
     def win(battle, winners, loot):
-        embed = Embed(title='Battle won!', description=', '.join([winner.name for winner in winners]), color=0x00fff3)
-        embed.add_field(name='Loot', value=loot)
-        return embed
+        string = '**BATTLE WON** \n'
+        string += ', '.join([winner.name for winner in winners])
+        string += '\n \n'
+        string += loot
+        return string
 
     def lose(battle):
-        embed = Embed(title='Battle lost!', description='', color=0x00fff3)
+        string = '**BATTLE LOST** \n'
+        return string
+
+    def link(messages):
+        amount = -min(10, len(messages))
+        messages = messages[amount:len(messages)]
+        endstring = ''
+        for msg in messages:
+            endstring += msg + '\n'
+        embed = Embed(title='Battle Event', description=endstring)
         return embed
+
+    def links(messages):
+        endstring = ''
+        for msg in messages:
+            endstring += msg + '\n'
+        embed = Embed(title='Battle Event', description=endstring)
+        return endstring

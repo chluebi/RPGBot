@@ -1,0 +1,8 @@
+{
+	"description":"Terrorize your enemies with your feet",
+	"target":["enemy",1],
+	"damage":[15,0.5],
+	"magic_damage":[0,0],
+	"cooldown":1,
+	"effects":[]
+}

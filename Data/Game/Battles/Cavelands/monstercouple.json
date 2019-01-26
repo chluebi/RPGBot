@@ -1,0 +1,12 @@
+{
+	"rarity":2,
+	"min_level":2,
+	"enemies":[
+		["troll",2],
+		["witch",1]
+	],
+	"loot":[
+		["gold",100],
+		["xp",150]
+	]
+}

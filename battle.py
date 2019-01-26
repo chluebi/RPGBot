@@ -3,19 +3,51 @@ import core
 import random
 import asyncio
 import random
+import os
 from files import dict_to_obj
 from formatting import Battleembed as bembed
 
 from Data.Game import AI
+from Data.Game import effects as ef
 
 
-abilitypath = 'Data/Game/Abilities.json'
-abilitydata = json.load(open(abilitypath))
+def load_abilities():
+    abilitypath = 'Data/Game/Abilities/'
+    abilitydata = {}
+    for file in os.listdir(abilitypath):
+        name, ext = os.path.splitext(file)
+        abilitydata[name] = json.load(open(abilitypath + file))
+    return abilitydata
+
+
+def load_battles():
+    battlepath = 'Data/Game/Battles/'
+    data = {}
+    for file in os.listdir(battlepath):
+        folder, ext = os.path.splitext(file)
+        path = os.path.join(battlepath, file)
+        data[folder] = {}
+        for file2 in os.listdir(path):
+            name, ext = os.path.splitext(file2)
+            data[folder][name] = json.load(open(os.path.join(path, file2)))
+    print(data)
+    return data
+
+
+def load_enemies():
+    enemypath = 'Data/Game/Enemies/'
+    enemydata = {}
+    for file in os.listdir(enemypath):
+        name, ext = os.path.splitext(file)
+        enemydata[name] = json.load(open(enemypath + file))
+    return enemydata
+
+
+abilitydata = load_abilities()
 
 
 async def new_battle(par, msg, player):
-    battlepath = 'Data/Game/Battles.json'
-    data = json.load(open(battlepath))
+    data = load_battles()
 
     if player.status[0] == 'battle':
         await msg.channel.send('You already are in a battle!')
@@ -29,8 +61,7 @@ async def new_battle(par, msg, player):
 
 
 class Battles:
-    battlepath = 'Data/Game/Battles.json'
-    data_original = json.load(open(battlepath))
+    data_original = load_battles()
 
     @staticmethod
     async def start_battle(name, player, cha):
@@ -73,6 +104,7 @@ class Battle:
         self.side1 = [Player(player)]
         self.channel = cha
         self.end = False
+        self.message = []
         player.status = ['battle', self.id]
         print(player.__dict__)
         self.side2 = [Enemy(enemytype, level) for enemytype, level in data['enemies']]
@@ -150,13 +182,14 @@ class Battle:
         if len(ability[1]['effects']) > 0:
             for effect, duration in ability['effects']:
                 target.effects.append((effect, duration))
+                ef.start(effect, target)
 
         return bembed.abipart(ability, target, attacker, damage, magic_damage, hbefore)
 
     async def wait_for_player(self, cha):
         if self.end:
             return
-        await cha.send(embed=bembed.player_turn(self.side1[0], self.side1, self.side2))
+        await cha.send(embed=bembed.player_turn(self.side1[0], self.side1, self.side2, self.message))
         turn = self.turn
         await asyncio.sleep(120)
         if turn == self.turn:
@@ -164,6 +197,7 @@ class Battle:
             self.remove_self()
 
     async def player_turn(self, par, msg, player):
+        self.message.append('---**Ally Turn**---')
         if self.end:
             return
         playeringame = [ing for ing in self.side1 if player.id == ing.id][0]
@@ -181,10 +215,9 @@ class Battle:
         if par[0] == 'use':
             embed = await playeringame.use_ability(self, 1, par, msg)
             if embed != None:
-                await msg.channel.send(embed=bembed.abifinish(embed))
+                self.message.append(bembed.abifinish(embed))
             else:
                 return
-            await asyncio.sleep(2)
             # await msg.channel.send(embed=bembed.show(self.side1, self.side2))
             self.turn += 1
 
@@ -192,6 +225,7 @@ class Battle:
             await self.enemy_turn()
 
     async def enemy_turn(self):
+        self.message.append('---**Enemy Turn**---')
         if self.end:
             return
 
@@ -202,7 +236,7 @@ class Battle:
                 embeds.append(text)
                 asyncio.wait(1)
 
-        await self.channel.send(embed=bembed.abicomp(embeds))
+        self.message.append(bembed.abicomp(embeds))
         self.turn += 1
         await self.check_win()
         self.update()
@@ -225,7 +259,8 @@ class Battle:
                 char.alive = False
 
         if len(embeds) > 0:
-            await self.channel.send(embed=bembed.abicomp(embeds))
+            self.message.append(bembed.deadcomp(embeds))
+            # await self.channel.send(embed=bembed.abicomp(embeds))
 
         if side2_dead == True:
             self.end = True
@@ -246,22 +281,29 @@ class Battle:
                 if abi[1] > 0:
                     abi[1] -= int(abi[1]) - 1
             print(char.abilities)
-        '''
-        for char in self.side2:
-            for abi in char.abilities:
-                abi[1] -= int(abi[1]) - 1
-        '''
+
+    def update_effects(side):
+        for char in side:
+            for effect in char.effects:
+                effect[1] = int(effect[1]) - 1
+                if effect[1] < 1:
+                    char.effects.remove(effect)
+                    ef.end(effect[0], char)
+                else:
+                    ef.tick(effect[0], char)
 
     async def win(self):
         winners = [char for char in self.side1 if char.isplayer == True]
         for winner in winners:
             player = core.GET.player(winner.id)
             loot = await player.give_item_bulk(self.data['loot'])
-        await self.channel.send(embed=bembed.win(self, winners, loot))
+        self.message.append(bembed.win(self, winners, loot))
+        await self.channel.send(embed=bembed.link(self.message))
         self.remove_self()
 
     async def lose(self):
-        await self.channel.send(embed=bembed.lose(self))
+        self.message.append(bembed.lose(self))
+        await self.channel.send(embed=bembed.link(self.message))
         self.remove_self()
 
 
@@ -340,8 +382,7 @@ class Player:
 
 
 class Enemy:
-    enemypath = 'Data/Game/Enemies.json'
-    data = json.load(open(enemypath))
+    data = load_enemies()
 
     def __init__(self, enemytype, level):
         self.name = enemytype

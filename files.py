@@ -8,7 +8,7 @@ from core import GET
 def dict_to_obj(data, obj):
     for name, key in data.items():
         if isinstance(key, (list, tuple)):
-            setattr(obj, name, [x if isinstance(x, dict) else x for x in key].copy())
+            setattr(obj, name, [x.copy() if isinstance(x, dict) else x for x in key].copy())
         else:
             setattr(obj, name, key.copy() if isinstance(key, dict) else key)
 
@@ -76,11 +76,11 @@ class User:
     async def give_item(self, item, amount):
         if item == 'xp':
             await self.give_xp(amount)
-            return
-        if item not in self.inventory:
-            self.inventory[item] = amount
         else:
-            self.inventory[item] += amount
+            if item not in self.inventory:
+                self.inventory[item] = amount
+            else:
+                self.inventory[item] += amount
 
         return 'You have received ``{}`` of **{}**'.format(amount, item)
 
