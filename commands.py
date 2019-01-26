@@ -6,6 +6,7 @@ from battle import new_battle
 from battle import Battle
 import formatting
 import discord
+import info
 
 
 async def execute(par, msg):
@@ -13,8 +14,10 @@ async def execute(par, msg):
     player = GET.player(msg.author.id)
 
     if par[0] == 'info':
-        await cha.send(embed=formatting.info())
-        return
+        await info.info(par, player, cha)
+
+    if par[0] == 'commands':
+        await info.commands(par, player, cha)
 
     if par[0] == 'help':
         await cha.send(embed=formatting.help())

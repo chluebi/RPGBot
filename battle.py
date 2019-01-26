@@ -6,9 +6,13 @@ import random
 import os
 from files import dict_to_obj
 from formatting import Battleembed as bembed
+import formatting as form
+from core import Tokens
 
 from Data.Game import AI
 from Data.Game import effects as ef
+
+prefix = Tokens.prefix()
 
 
 def load_abilities():
@@ -23,15 +27,18 @@ def load_abilities():
 def load_battles():
     battlepath = 'Data/Game/Battles/'
     data = {}
+    datapure = {}
     for file in os.listdir(battlepath):
         folder, ext = os.path.splitext(file)
         path = os.path.join(battlepath, file)
         data[folder] = {}
         for file2 in os.listdir(path):
             name, ext = os.path.splitext(file2)
-            data[folder][name] = json.load(open(os.path.join(path, file2)))
+            jsonfile = json.load(open(os.path.join(path, file2)))
+            data[folder][name] = jsonfile
+            datapure[name] = jsonfile
     print(data)
-    return data
+    return (data, datapure)
 
 
 def load_enemies():
@@ -53,29 +60,34 @@ async def new_battle(par, msg, player):
         await msg.channel.send('You already are in a battle!')
         return
 
+    if len(par) < 2:
+        msg.channel.send('Specify a battle! More info at with {}info battle'.format(prefix))
+        return
+
     if par[1] == 'tutorial':
         await Battles.start_battle('tutorial', player, msg.channel)
+        return
 
     if par[1] in ['c', 'cave', 'cavelands']:
         await Battles.start_battle('Cavelands', player, msg.channel)
+        return
+
+    await Battles.start_battle(par[1], player, msg.channel)
 
 
 class Battles:
-    data_original = load_battles()
+    data_original = load_battles()[0]
+    datapure = load_battles()[1]
 
     @staticmethod
     async def start_battle(name, player, cha):
         data = Battles.data_original.copy()
-        datapure = {}
-        for key, value in data.items():
-            for key2, value2 in value.items():
-                datapure[key2] = value2
-
+        datapure = Battles.datapure.copy()
         chosen = name
 
-        if chosen == 'Cavelands':
+        if chosen in data:
             battlelist = []
-            for key, value in data['Cavelands'].items():
+            for key, value in data[chosen].items():
                 if value['min_level'] <= player.level and value['min_level'] + 3 > player.level:
                     for i in range(value['rarity']):
                         battlelist.append(key)
@@ -84,12 +96,39 @@ class Battles:
             print(chosen)
 
         if chosen in datapure:
-            battledata = datapure[chosen]
+            if datapure[chosen]['min_level'] > player.level:
+                cha.send('Your level is too low.')
+            else:
+                battledata = datapure[chosen]
         else:
             raise Exception('Battle not found')
         battle = Battle(battledata, player, cha)
         core.battles.append(battle)
         await battle.wait_for_player(cha)
+
+    @staticmethod
+    def available_battles(player):
+        data = Battles.data_original.copy()
+        battlelist = ''
+        for folder, content in data.items():
+            battlelist += '**{}**\n'.format(folder)
+            for key, value in content.items():
+                if value['min_level'] <= player.level and value['min_level'] + 3 > player.level:
+                    battlelist += '- {} \n'.format(key)
+            battlelist += '\n\n'
+
+        return battlelist
+
+    @staticmethod
+    def battle_info(battle):
+        battle = battle
+        datapure = Battles.datapure
+        if battle not in datapure:
+            return None
+
+        data = datapure[battle]
+        desc = json.dumps(data)
+        return form.basic(battle, desc)
 
 
 class Battle:

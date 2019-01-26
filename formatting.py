@@ -4,6 +4,11 @@ from core import Tokens
 prefix = Tokens.prefix()
 
 
+def basic(tit, des):
+    embed = Embed(title=tit, description=des, color=0x009fff)
+    return embed
+
+
 def join():
     embed = Embed(title='Join', description='To use this bot, you first have to create a character', color=0x009fff)
     embed.add_field(name='>join', value='to create your character')
@@ -12,9 +17,17 @@ def join():
 
 def info():
     embed = Embed(title='Info', url=invite(), description='This is a RPG Bot', color=0x00fff3)
-    embed.add_field(name='Help', value='>help', inline=True)
-    embed.add_field(name='Commands', value='>commands', inline=True)
+    embed.add_field(name='Help', value='{}help'.format(prefix), inline=True)
+    embed.add_field(name='Commands', value='{}commands'.format(prefix), inline=True)
     embed.set_footer(text='Wanna add me to your server?')
+    return embed
+
+
+def commands(list):
+    embed = Embed(title='Commands', description='{}info <command> \n to get more info on each command'.format(prefix), color=0x00fff3)
+    for name, value in list:
+        embed.add_field(name=name, value=value, inline=True)
+
     return embed
 
 
