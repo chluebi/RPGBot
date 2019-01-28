@@ -46,7 +46,12 @@ async def execute(par, msg):
 
 async def answer(par, msg):
     cha = msg.channel
+
     if GET.player(msg.author.id) is None:
+        return
+    player = GET.player(msg.author.id)
+    if par[0] == 'info':
+        await info.info(par, player, cha)
         return
     print('ans')
     player = GET.player(msg.author.id)

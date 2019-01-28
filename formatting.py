@@ -2,10 +2,18 @@ from discord import Embed
 from core import Tokens
 
 prefix = Tokens.prefix()
+#emoji = {}
 
 
 def basic(tit, des):
     embed = Embed(title=tit, description=des, color=0x009fff)
+    return embed
+
+
+def joinf(tit, des, fields, inline):
+    embed = basic(tit, des)
+    for name, value in fields:
+        embed.add_field(name=name, value=value, inline=inline)
     return embed
 
 
@@ -83,20 +91,49 @@ def alphabet(array):
 class Battleembed:
 
     def player_turn(player, allyside, enemyside, history):
-
+        print('------------------------------player embed---------------')
         abilities = player.abilities
-        embed = Embed(title='Battle', description='{}info <thing> to get more info'.format(prefix + prefix), color=0x00fff3)
+        embed = Embed(title='Battle', description='{}info <thing> to get more info'.format(prefix), color=0x00fff3)
         if len(history) > 0:
             amount = -min(5, len(history))
             embed.add_field(name='History', value=Battleembed.links(history[amount:len(history)]), inline=False)
         allies = allyside
-        allies = ['{}({}hp)'.format(ally.name, ally.health) if ally.health > 0 else '~~{}~~'.format(ally.name) for ally in allies]
+        allies_print = []
+        for ally in allies:
+            endstring = ''
+            if ally.health > 0:
+                endstring += '{}({}hp) '.format(ally.name, ally.health)
+                print(ally.effects)
+                print(emoji)
+                for effect in ally.effects:
+                    if effect[0] in emoji:
+                        endstring += emoji[effect[0]]
+            else:
+                endstring += '~~{}~~'.format(ally.name)
+            allies_print.append(endstring)
+        allies = allies_print
+        #allies = ['{}({}hp)'.format(ally.name, ally.health) if ally.health > 0 else '~~{}~~'.format(ally.name) for ally in allies]
         embed.add_field(name='{}use'.format(prefix + prefix), value=alphabet(allies), inline=True)
         abilities = ['{}'.format(ability[0]) if ability[1] < 1 else '~~{}({}cd)~~'.format(ability[0], ability[1]) for ability in abilities]
         embed.add_field(name='<ability>', value=numerate(abilities), inline=True)
 
         enemies = enemyside
-        enemies = ['{}({}hp)'.format(enemy.name, enemy.health) if enemy.health > 0 else '~~{}~~'.format(enemy.name) for enemy in enemies]
+        enemies_print = []
+        for enemy in enemies:
+            endstring = ''
+            if enemy.health > 0:
+                endstring += '{}({}hp) '.format(enemy.name, enemy.health)
+                print(enemy.effects)
+                print(emoji)
+                for effect in enemy.effects:
+
+                    if effect[0] in emoji:
+                        endstring += emoji[effect[0]]
+            else:
+                endstring += '~~{}~~'.format(enemy.name)
+            enemies_print.append(endstring)
+        enemies = enemies_print
+        #enemies = ['{}({}hp)'.format(enemy.name, enemy.health) if enemy.health > 0 else '~~{}~~'.format(enemy.name) for enemy in enemies]
         embed.add_field(name='<target>', value=numerate(enemies), inline=True)
 
         return embed
@@ -124,7 +161,10 @@ class Battleembed:
         before = hbefore
         endstring = '{} used {} on {}'.format(attacker.name, ability[0], target.name)
         endstring += '\n'
-        endstring += '{} - **{}** - *{}* = {}'.format(before, damage, mdamage, target.health)
+        if damage > 0 or mdamage > 0:
+            endstring += '{} - **{}** - *{}* = {}'.format(before, damage, mdamage, target.health)
+        else:
+            endstring += '{} + **{}** + *{}* = {}'.format(before, damage, mdamage, target.health)
         if len(ability[1]['effects']) > 0:
             endstring += '\n *Effects:* \n'
             endstring += ', '.join(['{} - {} turns'.format(effect, length) for effect, length in ability[1]['effects']])
