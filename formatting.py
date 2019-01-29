@@ -31,12 +31,58 @@ def info():
     return embed
 
 
-def commands(list):
-    embed = Embed(title='Commands', description='{}info <command> \n to get more info on each command'.format(prefix), color=0x00fff3)
-    for name, value in list:
-        embed.add_field(name=name, value=value, inline=True)
+def commands(list_of_commands):
+    embed = Embed(title='Commands', description='{}info command <command> to get more info on each command'.format(prefix), color=0x00fff3)
+    for name, value, inline in list_of_commands:
+        embed.add_field(name=name, value=value, inline=inline)
 
     return embed
+
+
+def list_commands(player):
+    endlist = []
+
+    inline = False
+    value = '{}info'.format(prefix)
+    key = 'Gives you a quick overview'
+    endlist.append((value, key, inline))
+
+    inline = True
+    value = '{}info enemy <enemytype>'.format(prefix)
+    key = 'Gives you a quick overview of an enemytype \n Leave out the last part to get a list of all enemies'
+    endlist.append((value, key, inline))
+
+    value = '{}info enemy <enemy>'.format(prefix)
+    key = 'Gives you a quick overview of an enemy \n Note: Only works in a battle'
+    endlist.append((value, key, inline))
+
+    value = '{}info ability <ability>'.format(prefix)
+    key = 'Gives you a quick overview of an enemytype \n Leave out the last part to get a list of all abilities'
+    endlist.append((value, key, inline))
+
+    value = '{}info battle <battle>'.format(prefix)
+    key = 'Gives you a quick overview of an enemytype \n Leave out the last part to get a list of all battles'
+    endlist.append((value, key, inline))
+
+    inline = False
+    value = '{}battle <battle>'.format(prefix)
+    key = 'Start a battle! \n'
+    endlist.append((value, key, inline))
+
+    inline = True
+    value = '{}battle cavelands'.format(prefix)
+    key = 'Start a battle in the cavelands region! \n'
+    endlist.append((value, key, inline))
+
+    value = '{}info battle'.format(prefix)
+    key = 'Lists all available battles \n'
+    endlist.append((value, key, inline))
+
+    value = '{}info battle'.format(prefix)
+    key = 'Lists all available battles \n'
+    endlist.append((value, key, inline))
+
+    return endlist
 
 
 def help():
@@ -95,7 +141,7 @@ class Battleembed:
         abilities = player.abilities
         embed = Embed(title='Battle', description='{}info <thing> to get more info'.format(prefix), color=0x00fff3)
         if len(history) > 0:
-            amount = -min(5, len(history))
+            amount = -min(10, len(history))
             embed.add_field(name='History', value=Battleembed.links(history[amount:len(history)]), inline=False)
         allies = allyside
         allies_print = []
@@ -103,8 +149,6 @@ class Battleembed:
             endstring = ''
             if ally.health > 0:
                 endstring += '{}({}hp) '.format(ally.name, ally.health)
-                print(ally.effects)
-                print(emoji)
                 for effect in ally.effects:
                     if effect[0] in emoji:
                         endstring += emoji[effect[0]]
@@ -123,10 +167,7 @@ class Battleembed:
             endstring = ''
             if enemy.health > 0:
                 endstring += '{}({}hp) '.format(enemy.name, enemy.health)
-                print(enemy.effects)
-                print(emoji)
                 for effect in enemy.effects:
-
                     if effect[0] in emoji:
                         endstring += emoji[effect[0]]
             else:

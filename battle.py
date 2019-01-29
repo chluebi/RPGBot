@@ -11,6 +11,7 @@ from core import Tokens
 
 from Data.Game import AI
 from Data.Game import effects as ef
+from Data.Game import abilities as abi_scripts
 
 prefix = Tokens.prefix()
 
@@ -37,7 +38,7 @@ def load_battles():
             jsonfile = json.load(open(os.path.join(path, file2)))
             data[folder][name] = jsonfile
             datapure[name] = jsonfile
-    print(data)
+    # print(data)
     return (data, datapure)
 
 
@@ -51,7 +52,7 @@ def load_enemies():
 
 
 abilitydata = load_abilities()
-print(abilitydata)
+# print(abilitydata)
 
 
 async def new_battle(par, msg, player):
@@ -92,9 +93,9 @@ class Battles:
                 if value['min_level'] <= player.level and value['min_level'] + 3 > player.level:
                     for i in range(value['rarity']):
                         battlelist.append(key)
-            print(battlelist)
+            # print(battlelist)
             chosen = random.choice(battlelist)
-            print(chosen)
+            # print(chosen)
 
         if chosen in datapure:
             if datapure[chosen]['min_level'] > player.level:
@@ -136,7 +137,7 @@ class Battles:
                 endstring = ''
                 for thing, desc in value:
                     if key == 'enemies':
-                        endstring += '{}: level {} \n'.format(thing, desc + 1)
+                        endstring += '{}: level {} \n'.format(thing, desc)
                     else:
                         endstring += '{}: {} \n'.format(thing, desc)
             else:
@@ -161,7 +162,7 @@ class Battle:
         self.end = False
         self.message = []
         player.status = ['battle', self.id]
-        print(player.__dict__)
+        # print(player.__dict__)
         self.side2 = [Enemy(enemytype, level) for enemytype, level in data['enemies']]
         names = []
         amount = []
@@ -205,8 +206,11 @@ class Battle:
             char.side = 2
             char.index = i
 
+        for char in self.side1 + self.side2:
+            char.game = self
+
         self.turn = 1
-        print(self.__dict__)
+        # print(self.__dict__)
 
     def remove_self(self):
         players = [player for player in self.side1 if player.isplayer == True]
@@ -224,37 +228,7 @@ class Battle:
 
     @staticmethod
     def cast_ability(ability, target, attacker):
-        if len([effect for effect, duration in attacker.effects if effect in ef.cripef]) > 0:
-            return '{0.name} missed their turn.'.format(attacker)
-
-        print('target {}'.format(target.name))
-        print('attacker {}'.format(attacker.name))
-
-        hbefore = target.health
-        damage = ability[1]['damage'][0] + attacker.stats['strength'] * ability[1]['damage'][1]
-        if damage > 0:
-            damage = round(damage * (100 / (100 + target.stats['defense'])))
-        else:
-            damage = round(damage)
-        target.health -= damage
-
-        magic_damage = ability[1]['magic_damage'][0] + attacker.stats['intelligence'] * ability[1]['magic_damage'][1]
-        if magic_damage > 0:
-            magic_damage = round(magic_damage * (100 / (100 + target.stats['magic_defense'])))
-        else:
-            magic_damage = round(magic_damage)
-        target.health -= magic_damage
-
-        print('target {}'.format(target.name))
-        print('attacker {}'.format(attacker.name))
-
-        if len(ability[1]['effects']) > 0:
-            for effect, duration in ability[1]['effects']:
-                print('added {} {} for to {}'.format(effect, duration, target.name))
-                target.effects.append([effect, duration])
-                ef.start(effect, target)
-
-        return bembed.abipart(ability, target, attacker, damage, magic_damage, hbefore)
+        return abi_scripts.cast_ability(ability, target, attacker)
 
     async def wait_for_player(self, cha):
         if self.end:
@@ -286,7 +260,6 @@ class Battle:
             embed = await playeringame.use_ability(self, 1, par, msg)
             if embed != None:
                 self.message.append(bembed.abifinish(embed))
-                self.update_effects(self.side2)
             else:
                 return
             # await msg.channel.send(embed=bembed.show(self.side1, self.side2))
@@ -309,10 +282,11 @@ class Battle:
 
         self.message.append(bembed.abicomp(embeds))
         self.turn += 1
+        self.update_effects(self.side1)
+        self.update_effects(self.side2)
         await self.check_win()
         self.update()
         await self.wait_for_player(self.channel)
-        self.update_effects(self.side2)
 
     async def check_win(self):
         embeds = []
@@ -348,28 +322,31 @@ class Battle:
 
     def update(self):
         for char in self.side1:
-            print(char.abilities)
+            # print(char.abilities)
             for abi in char.abilities:
                 if abi[1] == 1:
                     abi[1] = 0
                 if abi[1] > 0:
                     abi[1] = int(abi[1]) - 1
-            print(char.abilities)
+            # print(char.abilities)
 
     def update_effects(self, side):
+        print('updating character effects')
         for char in side:
-            print('character effects:')
-            print(char.effects)
+            #print('character effects:')
+            # print(char.effects)
             for effect in char.effects:
+                effectmsg = ef.tick(effect[0], char)
+                if effectmsg is not None:
+                    self.message.append(effectmsg)
+
                 effect[1] = int(effect[1]) - 1
+
                 if effect[1] < 1:
                     char.effects.remove(effect)
-                    ef.end(effect[0], char)
-                else:
-                    effectmsg = ef.tick(effect[0], char)
+                    effectmsg = ef.end(effect[0], char)
                     if effectmsg is not None:
                         self.message.append(effectmsg)
-                        print(effectmsg)
 
     async def win(self):
         winners = [char for char in self.side1 if char.isplayer == True]
@@ -397,12 +374,12 @@ class Player:
             self.abilities.append(item)
 
         self.effects = []
-        print(self.user)
+        # print(self.user)
         self.name = self.user.mention
         self.health = 100 + self.level * 20
         self.isplayer = True
         self.alive = True
-        print(self.__dict__)
+        # print(self.__dict__)
 
     async def use_ability(self, battle, side, par, msg):
         if side == 1:
@@ -457,7 +434,6 @@ class Player:
         abilityname = self.abilities[par[1]][0]
         ability = (abilityname, ability)
         self.abilities[par[1]][1] = abilitydata[abilityname]['cooldown']
-        print((ability, target, self))
         return Battle.cast_ability(ability, target, self)
 
 
@@ -477,15 +453,15 @@ class Enemy:
         self.effects = []
         self.isplayer = False
         self.alive = True
-        print('stats:' + str(self.stats))
+        #print('stats:' + str(self.stats))
 
-        print(self.__dict__)
+        # print(self.__dict__)
 
     async def turn(self, battle):
         target, ability = AI.choose_ability(battle, self)
-        print((target, ability))
+        #print((target, ability))
         ability = (ability, abilitydata[ability])
-        print(ability)
+        # print(ability)
 
         embed = Battle.cast_ability(ability, target, self)
         return embed

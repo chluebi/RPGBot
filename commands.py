@@ -4,7 +4,7 @@ from social import new_user
 from files import User
 from battle import new_battle
 from battle import Battle
-import formatting
+import formatting as form
 import discord
 import info
 
@@ -17,10 +17,11 @@ async def execute(par, msg):
         await info.info(par, player, cha)
 
     if par[0] == 'commands':
-        await info.commands(par, player, cha)
+        list_of_commands = form.list_commands(player)
+        await cha.send(embed=form.commands(list_of_commands))
 
     if par[0] == 'help':
-        await cha.send(embed=formatting.help())
+        await cha.send(embed=form.help())
         return
 
     if player == None:
@@ -28,14 +29,11 @@ async def execute(par, msg):
             player = new_user(msg.author)
             await character_creation(par, msg, player)
         else:
-            await cha.send(embed=formatting.join())
+            await cha.send(embed=form.join())
         return
 
     if par[0] == 'join':
         await cha.send('You already joined!')
-
-    if par[0] == 'commands':
-        pass  # available commands
 
     if par[0] == 'tutorial':
         pass  # stuff
