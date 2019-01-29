@@ -2,10 +2,18 @@ from discord import Embed
 from core import Tokens
 
 prefix = Tokens.prefix()
+#emoji = {}
 
 
 def basic(tit, des):
     embed = Embed(title=tit, description=des, color=0x009fff)
+    return embed
+
+
+def joinf(tit, des, fields, inline):
+    embed = basic(tit, des)
+    for name, value in fields:
+        embed.add_field(name=name, value=value, inline=inline)
     return embed
 
 
@@ -23,12 +31,58 @@ def info():
     return embed
 
 
-def commands(list):
-    embed = Embed(title='Commands', description='{}info <command> \n to get more info on each command'.format(prefix), color=0x00fff3)
-    for name, value in list:
-        embed.add_field(name=name, value=value, inline=True)
+def commands(list_of_commands):
+    embed = Embed(title='Commands', description='{}info command <command> to get more info on each command'.format(prefix), color=0x00fff3)
+    for name, value, inline in list_of_commands:
+        embed.add_field(name=name, value=value, inline=inline)
 
     return embed
+
+
+def list_commands(player):
+    endlist = []
+
+    inline = False
+    value = '{}info'.format(prefix)
+    key = 'Gives you a quick overview'
+    endlist.append((value, key, inline))
+
+    inline = True
+    value = '{}info enemy <enemytype>'.format(prefix)
+    key = 'Gives you a quick overview of an enemytype \n Leave out the last part to get a list of all enemies'
+    endlist.append((value, key, inline))
+
+    value = '{}info enemy <enemy>'.format(prefix)
+    key = 'Gives you a quick overview of an enemy \n Note: Only works in a battle'
+    endlist.append((value, key, inline))
+
+    value = '{}info ability <ability>'.format(prefix)
+    key = 'Gives you a quick overview of an enemytype \n Leave out the last part to get a list of all abilities'
+    endlist.append((value, key, inline))
+
+    value = '{}info battle <battle>'.format(prefix)
+    key = 'Gives you a quick overview of an enemytype \n Leave out the last part to get a list of all battles'
+    endlist.append((value, key, inline))
+
+    inline = False
+    value = '{}battle <battle>'.format(prefix)
+    key = 'Start a battle! \n'
+    endlist.append((value, key, inline))
+
+    inline = True
+    value = '{}battle cavelands'.format(prefix)
+    key = 'Start a battle in the cavelands region! \n'
+    endlist.append((value, key, inline))
+
+    value = '{}info battle'.format(prefix)
+    key = 'Lists all available battles \n'
+    endlist.append((value, key, inline))
+
+    value = '{}info battle'.format(prefix)
+    key = 'Lists all available battles \n'
+    endlist.append((value, key, inline))
+
+    return endlist
 
 
 def help():
@@ -83,20 +137,44 @@ def alphabet(array):
 class Battleembed:
 
     def player_turn(player, allyside, enemyside, history):
-
+        print('------------------------------player embed---------------')
         abilities = player.abilities
-        embed = Embed(title='Battle', description='{}info <thing> to get more info'.format(prefix + prefix), color=0x00fff3)
+        embed = Embed(title='Battle', description='{}info <thing> to get more info'.format(prefix), color=0x00fff3)
         if len(history) > 0:
-            amount = -min(5, len(history))
+            amount = -min(10, len(history))
             embed.add_field(name='History', value=Battleembed.links(history[amount:len(history)]), inline=False)
         allies = allyside
-        allies = ['{}({}hp)'.format(ally.name, ally.health) if ally.health > 0 else '~~{}~~'.format(ally.name) for ally in allies]
+        allies_print = []
+        for ally in allies:
+            endstring = ''
+            if ally.health > 0:
+                endstring += '{}({}hp) '.format(ally.name, ally.health)
+                for effect in ally.effects:
+                    if effect[0] in emoji:
+                        endstring += emoji[effect[0]]
+            else:
+                endstring += '~~{}~~'.format(ally.name)
+            allies_print.append(endstring)
+        allies = allies_print
+        #allies = ['{}({}hp)'.format(ally.name, ally.health) if ally.health > 0 else '~~{}~~'.format(ally.name) for ally in allies]
         embed.add_field(name='{}use'.format(prefix + prefix), value=alphabet(allies), inline=True)
         abilities = ['{}'.format(ability[0]) if ability[1] < 1 else '~~{}({}cd)~~'.format(ability[0], ability[1]) for ability in abilities]
         embed.add_field(name='<ability>', value=numerate(abilities), inline=True)
 
         enemies = enemyside
-        enemies = ['{}({}hp)'.format(enemy.name, enemy.health) if enemy.health > 0 else '~~{}~~'.format(enemy.name) for enemy in enemies]
+        enemies_print = []
+        for enemy in enemies:
+            endstring = ''
+            if enemy.health > 0:
+                endstring += '{}({}hp) '.format(enemy.name, enemy.health)
+                for effect in enemy.effects:
+                    if effect[0] in emoji:
+                        endstring += emoji[effect[0]]
+            else:
+                endstring += '~~{}~~'.format(enemy.name)
+            enemies_print.append(endstring)
+        enemies = enemies_print
+        #enemies = ['{}({}hp)'.format(enemy.name, enemy.health) if enemy.health > 0 else '~~{}~~'.format(enemy.name) for enemy in enemies]
         embed.add_field(name='<target>', value=numerate(enemies), inline=True)
 
         return embed
@@ -124,7 +202,10 @@ class Battleembed:
         before = hbefore
         endstring = '{} used {} on {}'.format(attacker.name, ability[0], target.name)
         endstring += '\n'
-        endstring += '{} - **{}** - *{}* = {}'.format(before, damage, mdamage, target.health)
+        if damage > 0 or mdamage > 0:
+            endstring += '{} - **{}** - *{}* = {}'.format(before, damage, mdamage, target.health)
+        else:
+            endstring += '{} + **{}** + *{}* = {}'.format(before, damage, mdamage, target.health)
         if len(ability[1]['effects']) > 0:
             endstring += '\n *Effects:* \n'
             endstring += ', '.join(['{} - {} turns'.format(effect, length) for effect, length in ability[1]['effects']])
