@@ -13,6 +13,18 @@ def dict_to_obj(data, obj):
             setattr(obj, name, key.copy() if isinstance(key, dict) else key)
 
 
+def load_gear():
+    gearpath = 'Data/Game/Gear/'
+    geardata = {}
+    for file in os.listdir(gearpath):
+        name, ext = os.path.splitext(file)
+        geardata[name] = json.load(open(gearpath + file))
+    return geardata
+
+
+geardata = load_gear()
+
+
 class User:
     playerpath = 'Data/Players'
     standard_player = json.load(open('Data/Game/standard_player.json', 'r'))
@@ -21,6 +33,7 @@ class User:
     def __init__(self, name, identifier):
         if not os.path.exists('{}/{}.json'.format(User.playerpath, name)):
             dict_to_obj(self.standard_player, self)
+            self.abilities = []
             self.name = str(name)
             self.id = identifier
             self.save_self()
@@ -35,6 +48,7 @@ class User:
                 if key not in self.standard_player:
                     data.pop(key)
             dict_to_obj(data, self)
+            self.abilities = []
             self.save_self()
         self.user = GET.clientuser(self.id)
         print(self.__dict__)
@@ -64,6 +78,23 @@ class User:
         with open(filename, "w+") as write_file:
             json.dump(file, write_file, indent=4)
 
+        self.reload()
+
+    def reload(self):
+        for stat, value in self.stats.items():
+            self.stats[stat] = 10 + self.level * 2
+
+        for pos, item in self.equipped.items():
+            if item == 0:
+                continue
+            item = geardata[item]
+            for stat, value in item['stats'].items():
+                self.stats[stat] += value
+
+            for ability in item['abilities']:
+                if ability not in self.abilities:
+                    self.abilities.append(ability)
+
     def remove_self(self):
         filename = os.path.join(User.playerpath, '{}.json'.format(self.name))
         os.remove(filename)
@@ -81,6 +112,9 @@ class User:
                 self.inventory[item] = amount
             else:
                 self.inventory[item] += amount
+
+            if self.inventory[item] < 1:
+                self.inventory.remove(item)
 
         return 'You have received ``{}`` of **{}**'.format(amount, item)
 
@@ -103,6 +137,8 @@ class User:
             items = Parsing.classes[chosen]['starter_items']
             items = [(x, y) for x, y in items]
             await self.give_item_bulk(items)
+            for item, amount in items:
+                self.equip(item)
             for ability in Parsing.classes[chosen]['starter_abilities']:
                 await self.give_ability(ability)
         else:
@@ -110,16 +146,27 @@ class User:
 
     async def give_xp(self, amount):
         self.xp += amount
-        xplimit = (self.level * 100) * (self.level)
+        xplimit = ((self.level + 1) * 100)
         while self.xp > xplimit:
-            xplimit = (self.level * 100) * (self.level)
             await self.level_up()
+            xplimit = ((self.level + 1) * 100)
             self.xp -= xplimit
 
     async def level_up(self):
         self.level += 1
         user = GET.clientuser(self.id)
         await user.send('You levelled up! New level {}'.format(self.level))
+        self.reload()
+
+    def equip(self, item):
+        if not item in geardata:
+            raise Exception('Item not found')
+
+        self.equipped[geardata[item]['position']] = item
+
+        self.save_self()
+
+        return 'Equipped **{}**'.format(item)
 
 
 class Item:

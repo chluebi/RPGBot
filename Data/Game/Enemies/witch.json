@@ -1,16 +1,38 @@
 {
-	"description":"Insert pun about which.",
-	"health":[25,10],
-	"abilities": [
-		"fireball"
-	],
-	"stats": {
-    	"strength":[0,0],
-    	"intelligence":[15,2],
-    	"defense":[6,1],
-    	"magic_defense":[6,1]
-	},
-	"drops": [
-		["gold",15]
-	]
+    "description": "Insert pun about which.",
+    "health": [
+        25,
+        10
+    ],
+    "abilities": [
+        "fireball"
+    ],
+    "stats": {
+        "strength": [
+            0,
+            0
+        ],
+        "intelligence": [
+            15,
+            2
+        ],
+        "defense": [
+            6,
+            1
+        ],
+        "magic_defense": [
+            6,
+            1
+        ],
+        "precision": [
+            6,
+            1
+        ]
+    },
+    "drops": [
+        [
+            "gold",
+            15
+        ]
+    ]
 }

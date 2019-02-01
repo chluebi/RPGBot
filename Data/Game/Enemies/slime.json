@@ -1,16 +1,38 @@
 {
-	"description":"Absorbs all your sorrows with you.",
-	"health":[30,10],
-	"abilities": [
-		"slimespit"
-	],
-	"stats": {
-    	"strength":[2,1],
-    	"intelligence":[8,1],
-    	"defense":[6,1],
-    	"magic_defense":[10,2]
-	},
-	"drops": [
-		["gold",10]
-	]
+    "description": "Absorbs all your sorrows with you.",
+    "health": [
+        30,
+        10
+    ],
+    "abilities": [
+        "slimespit"
+    ],
+    "stats": {
+        "strength": [
+            2,
+            1
+        ],
+        "intelligence": [
+            8,
+            1
+        ],
+        "defense": [
+            6,
+            1
+        ],
+        "magic_defense": [
+            10,
+            2
+        ],
+        "precision": [
+            6,
+            1
+        ]
+    },
+    "drops": [
+        [
+            "gold",
+            10
+        ]
+    ]
 }

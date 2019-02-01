@@ -1,7 +1,7 @@
 {
-    "description": "Eeeeeeeeeeeeew",
+    "description": "Heals the target ally.",
     "target": [
-        "enemy",
+        "ally",
         1
     ],
     "damage": [
@@ -10,10 +10,10 @@
         0
     ],
     "magic_damage": [
-        15,
-        0.5,
-        0.2
+        -20,
+        -1,
+        0
     ],
-    "cooldown": 0,
+    "cooldown": 3,
     "effects": []
 }

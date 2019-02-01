@@ -1,7 +1,7 @@
 {
-    "description": "Yes it burns, thanks for asking",
+    "description": "Freezes all enemies.",
     "target": [
-        "enemy",
+        "enemy_all",
         1
     ],
     "damage": [
@@ -10,14 +10,14 @@
         0
     ],
     "magic_damage": [
-        10,
-        0.5,
-        0.2
+        5,
+        0.2,
+        0
     ],
-    "cooldown": 0,
+    "cooldown": 3,
     "effects": [
         [
-            "burn",
+            "freeze",
             "2"
         ]
     ]

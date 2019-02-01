@@ -40,47 +40,82 @@ def commands(list_of_commands):
 
 
 def list_commands(player):
+    status = player.status[0]
+    print(status)
+    print(status is None)
+    print(status == None)
     endlist = []
 
-    inline = False
-    value = '{}info'.format(prefix)
-    key = 'Gives you a quick overview'
-    endlist.append((value, key, inline))
+    if status == 'None' or status == None:
+        inline = False
+        value = '{}deletecharacter'.format(prefix)
+        key = 'Deletes your current character.'
+        endlist.append((value, key, inline))
 
-    inline = True
-    value = '{}info enemy <enemytype>'.format(prefix)
-    key = 'Gives you a quick overview of an enemytype \n Leave out the last part to get a list of all enemies'
-    endlist.append((value, key, inline))
+        inline = False
+        value = '{}info'.format(prefix)
+        key = 'Gives you a quick overview'
+        endlist.append((value, key, inline))
 
-    value = '{}info enemy <enemy>'.format(prefix)
-    key = 'Gives you a quick overview of an enemy \n Note: Only works in a battle'
-    endlist.append((value, key, inline))
+        inline = True
+        value = '{}info enemy <enemytype>'.format(prefix)
+        key = 'Gives you a quick overview of an enemytype \n Leave out the last part to get a list of all enemies'
+        endlist.append((value, key, inline))
+        '''
+        value = '{}info enemy <enemy>'.format(prefix)
+        key = 'Gives you a quick overview of an enemy \n Note: Only works in a battle'
+        endlist.append((value, key, inline))
+        '''
+        value = '{}info ability <ability>'.format(prefix)
+        key = 'Gives you a quick overview of an enemytype \n Leave out the last part to get a list of all abilities'
+        endlist.append((value, key, inline))
 
-    value = '{}info ability <ability>'.format(prefix)
-    key = 'Gives you a quick overview of an enemytype \n Leave out the last part to get a list of all abilities'
-    endlist.append((value, key, inline))
+        value = '{}info battle <battle>'.format(prefix)
+        key = 'Gives you a quick overview of an enemytype \n Leave out the last part to get a list of all battles'
+        endlist.append((value, key, inline))
 
-    value = '{}info battle <battle>'.format(prefix)
-    key = 'Gives you a quick overview of an enemytype \n Leave out the last part to get a list of all battles'
-    endlist.append((value, key, inline))
+        inline = False
+        value = '{}battle <battle>'.format(prefix)
+        key = 'Start a battle! \n'
+        endlist.append((value, key, inline))
 
-    inline = False
-    value = '{}battle <battle>'.format(prefix)
-    key = 'Start a battle! \n'
-    endlist.append((value, key, inline))
+        inline = True
+        value = '{}battle cavelands'.format(prefix)
+        key = 'Start a battle in the cavelands region! \n'
+        endlist.append((value, key, inline))
 
-    inline = True
-    value = '{}battle cavelands'.format(prefix)
-    key = 'Start a battle in the cavelands region! \n'
-    endlist.append((value, key, inline))
+        value = '{}info battle'.format(prefix)
+        key = 'Lists all available battles \n'
+        endlist.append((value, key, inline))
 
-    value = '{}info battle'.format(prefix)
-    key = 'Lists all available battles \n'
-    endlist.append((value, key, inline))
+        value = '{}info battle'.format(prefix)
+        key = 'Lists all available battles \n'
+        endlist.append((value, key, inline))
+    elif status is 'battle':
+        prefix2 = prefix + prefix
 
-    value = '{}info battle'.format(prefix)
-    key = 'Lists all available battles \n'
-    endlist.append((value, key, inline))
+        inline = False
+        value = '{}use <ability> *<target>'.format(prefix2)
+        key = 'Use an ability in the fight. \n <ability> and <target> are the index of the ability and target \n <target> is sometimes not required'
+        endlist.append((value, key, inline))
+
+        inline = False
+        value = '{}concede'.format(prefix2)
+        key = 'Leave the battle without any rewards'
+        endlist.append((value, key, inline))
+
+        inline = True
+        value = '{}info enemy <enemytype>'.format(prefix2)
+        key = 'Gives you a quick overview of an enemytype \n Leave out the last part to get a list of all enemies'
+        endlist.append((value, key, inline))
+
+        value = '{}info enemy <enemy>'.format(prefix2)
+        key = 'Gives you a quick overview of an enemy \n Note: Only works in a battle'
+        endlist.append((value, key, inline))
+
+        value = '{}info ability <ability>'.format(prefix2)
+        key = 'Gives you a quick overview of an enemytype \n Leave out the last part to get a list of all abilities'
+        endlist.append((value, key, inline))
 
     return endlist
 

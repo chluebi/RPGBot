@@ -1,0 +1,15 @@
+{
+    "description": "Starter Sword",
+    "position": "main",
+    "stats": {
+        "strength": 2,
+        "intelligence": 0,
+        "defense": 0,
+        "magic_defense": 0,
+        "precision": 0
+    },
+    "abilities": [
+        "strike",
+        "smash"
+    ]
+}

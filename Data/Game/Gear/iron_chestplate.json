@@ -1,0 +1,12 @@
+{
+    "description": "Protects you from some stuff",
+    "position": "chest",
+    "stats": {
+        "strength": 0,
+        "intelligence": 0,
+        "defense": 4,
+        "magic_defense": 2,
+        "precision": 0
+    },
+    "abilities": []
+}

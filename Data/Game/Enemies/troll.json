@@ -1,17 +1,39 @@
 {
-	"description":"His cub might be more intelligent than him.",
-	"health":[40,15],
-	"abilities": [
-		"strike",
-		"stomp"
-	],
-	"stats": {
-    	"strength":[12,2],
-    	"intelligence":[0,0],
-    	"defense":[10,2],
-    	"magic_defense":[2,1]
-	},
-	"drops": [
-		["gold",10]
-	]
+    "description": "His cub might be more intelligent than him.",
+    "health": [
+        40,
+        15
+    ],
+    "abilities": [
+        "strike",
+        "stomp"
+    ],
+    "stats": {
+        "strength": [
+            12,
+            2
+        ],
+        "intelligence": [
+            0,
+            0
+        ],
+        "defense": [
+            10,
+            2
+        ],
+        "magic_defense": [
+            2,
+            1
+        ],
+        "precision": [
+            6,
+            1
+        ]
+    },
+    "drops": [
+        [
+            "gold",
+            10
+        ]
+    ]
 }

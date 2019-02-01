@@ -27,6 +27,7 @@ class Parsing:
         if message.content[:len(prefix) * 2] == prefix + prefix:
             return None
         parsedmsg = message.content[len(prefix):].split()
+        parsedmsg = [msg.lower() for msg in parsedmsg]
         print(parsedmsg)
         return parsedmsg
 
@@ -39,6 +40,7 @@ class Parsing:
         if len(message.content) <= len(prefix):
             return None
         parsedmsg = message.content[len(prefix):].split()
+        parsedmsg = [msg.lower() for msg in parsedmsg]
         print(parsedmsg)
         return parsedmsg
 
@@ -67,6 +69,31 @@ class GET:
             if user.id == identifier:
                 return user
 
+        return None
+
+    @staticmethod
+    def player_by_name(name):
+        for user in users:
+            print('------ next user ------')
+            discorduser = GET.clientuser(user.id)
+            print(str(user.name)[:len(name)].lower())
+            if str(user.name)[:len(name)].lower() == name:
+                return user.id
+            print(str(discorduser)[:len(name)].lower())
+            if str(discorduser)[:len(name)].lower() == name:
+                return user.id
+            print(str(user.id)[:len(name)].lower())
+            if str(user.id)[:len(name)].lower() == name:
+                return user.id
+            print(str(discorduser.id)[:len(name)].lower())
+            if str(discorduser.id)[:len(name)].lower() == name:
+                return user.id
+            print(str(discorduser.display_name)[:len(name)].lower())
+            if str(discorduser.display_name)[:len(name)].lower() == name:
+                return user.id
+            print(str(discorduser.discriminator)[:len(name)].lower())
+            if str(discorduser.discriminator)[:len(name)].lower() == name:
+                return user.id
         return None
 
     @staticmethod

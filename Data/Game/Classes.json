@@ -18,7 +18,9 @@
 		],
 		"starter_abilities":[
 			"fireball",
-			"icecone"
+			"icecone",
+			"healwound",
+			"frostnova"
 		]
 	}
 }

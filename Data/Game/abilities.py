@@ -4,19 +4,24 @@ from formatting import Battleembed as bembed
 
 
 def cast_ability(ability, target, attacker):
+    if isinstance(target, (list,)):
+        if len(target) > 1:
+            return '\n'.join([cast_ability(ability, targ, attacker) for targ in target])
+        else:
+            target = target[0]
     print('{} used {} on {}'.format(attacker.name, ability[0], target.name))
     if len([effect for effect, duration in attacker.effects if effect in ef.cripef]) > 0:
         return '{0.name} missed their turn.'.format(attacker)
 
     hbefore = target.health
-    damage = ability[1]['damage'][0] + attacker.stats['strength'] * ability[1]['damage'][1]
+    damage = ability[1]['damage'][0] + attacker.stats['strength'] * ability[1]['damage'][1] + attacker.stats['precision'] * ability[1]['damage'][2]
     if damage > 0:
         damage = round(damage * (100 / (100 + target.stats['defense'])))
     else:
         damage = round(damage)
     target.health -= damage
 
-    magic_damage = ability[1]['magic_damage'][0] + attacker.stats['intelligence'] * ability[1]['magic_damage'][1]
+    magic_damage = ability[1]['magic_damage'][0] + attacker.stats['intelligence'] * ability[1]['magic_damage'][1] + attacker.stats['precision'] * ability[1]['magic_damage'][2]
     if magic_damage > 0:
         magic_damage = round(magic_damage * (100 / (100 + target.stats['magic_defense'])))
     else:

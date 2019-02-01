@@ -1,16 +1,38 @@
 {
-	"description":"A weak cave creature.",
-	"health":[10,10],
-	"abilities": [
-		"strike"
-	],
-	"stats": {
-    	"strength":[3,1],
-    	"intelligence":[0,0],
-    	"defense":[8,2],
-    	"magic_defense":[7,2]
-	},
-	"drops": [
-		["gold",2]
-	]
+    "description": "Standard Enemy",
+    "health": [
+        10,
+        10
+    ],
+    "abilities": [
+        "strike"
+    ],
+    "stats": {
+        "strength": [
+            10,
+            2
+        ],
+        "intelligence": [
+            3,
+            1
+        ],
+        "defense": [
+            4,
+            1
+        ],
+        "magic_defense": [
+            5,
+            1
+        ],
+        "precision": [
+            6,
+            1
+        ]
+    },
+    "drops": [
+        [
+            "gold",
+            2
+        ]
+    ]
 }

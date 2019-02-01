@@ -1,0 +1,12 @@
+{
+    "description": "Leather might not be magic, but pretty cool",
+    "position": "chest",
+    "stats": {
+        "strength": 0,
+        "intelligence": 2,
+        "defense": 2,
+        "magic_defense": 1,
+        "precision": 0
+    },
+    "abilities": []
+}

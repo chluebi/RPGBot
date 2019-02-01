@@ -99,7 +99,8 @@ class Battles:
 
         if chosen in datapure:
             if datapure[chosen]['min_level'] > player.level:
-                cha.send('Your level is too low.')
+                await cha.send('Your level is too low.')
+                return
             else:
                 battledata = datapure[chosen]
         else:
@@ -241,7 +242,6 @@ class Battle:
             self.remove_self()
 
     async def player_turn(self, par, msg, player):
-        self.message.append('---**Ally Turn**---')
         if self.end:
             return
         playeringame = [ing for ing in self.side1 if player.id == ing.id][0]
@@ -257,6 +257,7 @@ class Battle:
             pass
 
         if par[0] == 'use':
+            self.message.append('---**Ally Turn**---')
             embed = await playeringame.use_ability(self, 1, par, msg)
             if embed != None:
                 self.message.append(bembed.abifinish(embed))
@@ -267,6 +268,11 @@ class Battle:
 
             await self.check_win()
             await self.enemy_turn()
+
+        if par[0] in ['concede', 'leave', 'l']:
+            self.message.append('{} gave up.'.format(player.user.mention))
+            await self.channel.send(embed=bembed.link(self.message))
+            self.remove_self()
 
     async def enemy_turn(self):
         self.message.append('---**Enemy Turn**---')
@@ -385,14 +391,18 @@ class Player:
         if side == 1:
             allyside = [ally if ally.health > 0 else None for ally in battle.side1]
             enemyside = [enemy if enemy.health > 0 else None for enemy in battle.side2]
+            alive_allyside = [ally for ally in battle.side1 if ally.health > 0]
+            alive_enemyside = [enemy for enemy in battle.side2 if enemy.health > 0]
         else:
             allyside = [ally if ally.health > 0 else None for ally in battle.side2]
             enemyside = [enemy if enemy.health > 0 else None for enemy in battle.side1]
+            alive_allyside = [ally for ally in battle.side2 if ally.health > 0]
+            alive_enemyside = [enemy for enemy in battle.side1 if enemy.health > 0]
 
         try:
             par[1] = int(par[1]) - 1
-            par[2] = int(par[2]) - 1
         except Exception:
+            await msg.channel.send('not a valid ability')
             return
 
         ability = par[1]
@@ -407,25 +417,36 @@ class Player:
             return
 
         target = ability['target'][0]
-
         if target == 'enemy':
-            if len(enemyside) < 2:
-                target = enemyside[0]
-            else:
-                try:
-                    target = enemyside[par[2]]
-                except Exception:
-                    await msg.channel.send('not a valid target')
-                    return
-                if target == None:
-                    await msg.channel.send('this character is already dead')
-                    return
+            # if len(alive_enemyside) < 2:
+            #    target = enemyside[0]
+            # else:
+            try:
+                par[2] = int(par[2]) - 1
+                target = [enemyside[par[2]]]
+            except Exception:
+                await msg.channel.send('not a valid target')
+                return
+            if None in target:
+                await msg.channel.send('this character is already dead')
+                return
         elif target == 'ally':
-            pass
+            abc = 'abcdefghijklmnopqrstuvwxyz'
+            # if len(alive_allyside) < 2:
+            #    target = allyside[0]
+            # else:
+            try:
+                target = [allyside[abc.index(par[2]) - 1]]
+            except Exception:
+                await msg.channel.send('not a valid target')
+                return
+            if None in target:
+                await msg.channel.send('this character is already dead')
+                return
         elif target == 'enemy_all':
-            pass
+            target = alive_enemyside
         elif target == 'ally_all':
-            pass
+            target = alive_allyside
         elif target == 'all':
             pass
         else:

@@ -2,11 +2,11 @@
 	"rarity":2,
 	"min_level":2,
 	"enemies":[
-		["goblin",0],
-		["goblin",0],
-		["goblin",0],
-		["goblin",0],
-		["goblin",0]
+		["goblin",1],
+		["goblin",1],
+		["goblin",1],
+		["goblin",1],
+		["goblin",1]
 	],
 	"loot":[
 		["gold",100],

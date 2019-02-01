@@ -2,7 +2,9 @@ from core import Tokens, GET
 import formatting as form
 import json
 from battle import load_abilities, load_battles, load_enemies
+from files import load_gear
 from battle import Battles
+from discord import Embed
 
 
 def all_battles(player):
@@ -40,25 +42,34 @@ def abilitiy_info(ability):
     abilitydata = data[ability]
     endstring += abilitydata['description'] + '\n\n'
     endstring += 'Targets '
-    endstring += str(abilitydata['target'][1])
-    if abilitydata['target'][1] == 1:
-        if abilitydata['target'][0] == 'enemy':
-            endstring += ' enemy'
+    if abilitydata['target'][0] == 'enemy_all':
+        endstring += ' all enemies'
+    elif abilitydata['target'][0] == 'ally_all':
+        endstring += ' all allies'
     else:
-        if abilitydata['target'][0] == 'enemy':
-            endstring += ' enemies'
+        endstring += str(abilitydata['target'][1])
+        if abilitydata['target'][1] == 1:
+            if abilitydata['target'][0] == 'enemy':
+                endstring += ' enemy'
+            if abilitydata['target'][0] == 'ally':
+                endstring += ' ally'
+        else:
+            if abilitydata['target'][0] == 'enemy':
+                endstring += ' enemies'
+            if abilitydata['target'][0] == 'ally':
+                endstring += ' allies'
 
     endstring += '.\n'
     dmg = abilitydata['damage']
     if abilitydata['damage'][0] > 0 or abilitydata['damage'][1] > 0:
-        endstring += 'Deals **{} (+ {}%  of strength)** damage \n'.format(dmg[0], dmg[1] * 100)
+        endstring += 'Deals **{} (+ {}%  of strength) (+ {}%  of precision)** damage \n'.format(dmg[0], dmg[1] * 100, dmg[2] * 100)
     if abilitydata['damage'][0] < 0 or abilitydata['damage'][1] < 0:
-        endstring += 'Heals for **{} (+ {}%  of strength)** damage \n'.format(dmg[0], dmg[1] * 100)
+        endstring += 'Heals for **{} (+ {}%  of strength) (+ {}%  of precision)** damage \n'.format(dmg[0], dmg[1] * 100, dmg[2] * 100)
     mdmg = abilitydata['magic_damage']
     if mdmg[0] > 0 or mdmg[1] > 0:
-        endstring += 'Deals **{} (+ {}%  of intelligence)** magic damage \n'.format(mdmg[0], mdmg[1] * 100)
+        endstring += 'Deals **{} (+ {}%  of intelligence) (+ {}%  of precision)** magic damage \n'.format(mdmg[0], mdmg[1] * 100, dmg[2] * 100)
     if mdmg[0] < 0 or mdmg[1] < 0:
-        endstring += 'Heals for **{} (+ {}%  of intelligence)** damage \n'.format(mdmg[0], mdmg[1] * 100)
+        endstring += 'Heals for **{} (+ {}%  of intelligence) (+ {}%  of precision)** damage \n'.format(mdmg[0], mdmg[1] * 100, dmg[2] * 100)
 
     ef = abilitydata['effects']
     if len(ef) > 1:
@@ -84,6 +95,15 @@ def all_enemies():
         enemylist += '**{}** \n'.format(key)
 
     return enemylist
+
+
+def all_items():
+    data = load_gear()
+    itemlist = ''
+    for key, value in data.items():
+        itemlist += '**{}** \n'.format(key)
+
+    return itemlist
 
 
 def enemy_info(enemy):
@@ -135,6 +155,53 @@ def ingame_enemy_info(enemy):
     return form.basic(enemy.name, endstring)
 
 
+def user_info(searched_player, player):
+    searched_clientuser = GET.clientuser(searched_player.id)
+    endstring = ''
+    endstring += '**ID:** {} \n'.format(searched_player.id)
+    endstring += '**Status:** {} \n'.format(str(searched_player.status))
+    endstring += '**Level:** {} \n'.format(searched_player.level)
+    xplimit = ((searched_player.level + 1) * 100)
+    endstring += '**XP:** {}/{} \n\n'.format(searched_player.xp, xplimit)
+    endstring += '**Stats:** \n'
+    for key, value in searched_player.stats.items():
+        endstring += '{}: {} \n'.format(key, value)
+    endstring += '\n'
+    endstring += '**Gear:** \n'
+    for key, value in searched_player.equipped.items():
+        endstring += '{}: {} \n'.format(key, value)
+    endstring += '\n'
+    endstring += '**Inventory:** \n'
+    for key, value in searched_player.inventory.items():
+        endstring += '{}: {} \n'.format(key, value)
+    endstring += '\n'
+    endstring += '**Abilities:** \n'
+    for key in searched_player.abilities:
+        endstring += '{} \n'.format(key)
+    endstring += '\n'
+    embed = Embed(title=searched_player.name, description=endstring, color=0x00ffa7)
+    embed.set_author(name='searched by {0.name}'.format(player), icon_url=GET.clientuser(player.id).avatar_url)
+    embed.set_thumbnail(url=searched_clientuser.avatar_url)
+    return embed
+
+
+def item_info(item):
+    item2 = item
+    item = load_gear()[item]
+    endstring = ''
+    endstring += item['description'] + '\n\n'
+    endstring += 'Position: **{}** \n\n'.format(item['position'])
+    for stat, value in item['stats'].items():
+        endstring += '{}: **{}** \n'.format(stat, value)
+
+    if len(item['abilities']) > 0:
+        endstring += '\n Grants Abilities: \n'
+        for ability in item['abilities']:
+            endstring += '**{}** \n'.format(ability)
+
+    return form.basic(item2, endstring)
+
+
 prefix = Tokens.prefix()
 
 
@@ -182,6 +249,33 @@ async def info(par, player, cha):
                 return
             else:
                 await cha.send(embed=form.basic('Not found', 'enemy not found'))
+
+    if par[1] in ['user', 'player', 'u']:
+        if len(par) < 3:
+            await cha.send(embed=form.basic('Not enough arguments', 'specify a User'))
+            return
+        if par[2] == 'self':
+            searched_player = player
+        else:
+            searched_player = GET.player_by_name(par[2])
+            searched_player = GET.player(searched_player)
+
+        if searched_player is None:
+            await cha.send(embed=form.basic('Not found', 'Player not found'))
+        else:
+            await cha.send(embed=user_info(searched_player, player))
+
+    if par[1] in ['item', 'gear', 'i']:
+        if len(par) < 3:
+            await cha.send(embed=form.basic('Items', all_items()))
+            return
+
+        items = load_gear()
+        if par[2] not in items:
+            await cha.send(embed=form.basic('Not found', 'Item not found'))
+            return
+
+        await cha.send(embed=item_info(par[2]))
 
 
 async def commands(par, player, cha):

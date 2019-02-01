@@ -2,7 +2,7 @@
 	"rarity":3,
 	"min_level":1,
 	"enemies":[
-		["troll",0],
+		["troll",2],
 		["goblin",1],
 		["goblin",1]
 	],

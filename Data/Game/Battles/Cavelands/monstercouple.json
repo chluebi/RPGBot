@@ -3,7 +3,7 @@
 	"min_level":2,
 	"enemies":[
 		["troll",2],
-		["witch",1]
+		["witch",2]
 	],
 	"loot":[
 		["gold",100],

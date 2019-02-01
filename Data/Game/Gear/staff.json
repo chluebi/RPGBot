@@ -1,0 +1,15 @@
+{
+    "description": "I would like to talk to the manager",
+    "position": "main",
+    "stats": {
+        "strength": 0,
+        "intelligence": 3,
+        "defense": 0,
+        "magic_defense": 0,
+        "precision": 0
+    },
+    "abilities": [
+        "fireball",
+        "icecone"
+    ]
+}
