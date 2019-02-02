@@ -1,12 +1,14 @@
 {
     "description": "Starter Sword",
     "position": "main",
+    "rarity": 0,
     "stats": {
         "strength": 2,
         "intelligence": 0,
         "defense": 0,
         "magic_defense": 0,
-        "precision": 0
+        "precision": 0,
+        "health": 0
     },
     "abilities": [
         "strike",

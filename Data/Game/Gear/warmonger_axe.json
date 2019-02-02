@@ -1,0 +1,14 @@
+{
+    "description": "Me BIG. You SMASH.",
+    "position": "main",
+    "rarity": "very rare",
+    "stats": {
+        "strength": 10,
+        "intelligence": 0,
+        "defense": 0,
+        "magic_defense": 0,
+        "precision": 0,
+        "health": 30
+    },
+    "abilities": ["smash"]
+}

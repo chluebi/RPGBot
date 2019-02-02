@@ -3,6 +3,7 @@ import formatting as form
 import json
 from battle import load_abilities, load_battles, load_enemies
 from files import load_gear
+from Data.Game.effects import load_effects
 from battle import Battles
 from discord import Embed
 
@@ -106,6 +107,15 @@ def all_items():
     return itemlist
 
 
+def all_effects():
+    data = load_effects()
+    effectlist = ''
+    for key, value in data.items():
+        effectlist += '**{}** {} \n'.format(key, value['emoji'])
+
+    return effectlist
+
+
 def enemy_info(enemy):
     data = load_enemies()
 
@@ -163,6 +173,7 @@ def user_info(searched_player, player):
     endstring += '**Level:** {} \n'.format(searched_player.level)
     xplimit = ((searched_player.level + 1) * 100)
     endstring += '**XP:** {}/{} \n\n'.format(searched_player.xp, xplimit)
+    endstring += '**Health: {}** \n'.format(searched_player.health)
     endstring += '**Stats:** \n'
     for key, value in searched_player.stats.items():
         endstring += '{}: {} \n'.format(key, value)
@@ -172,8 +183,12 @@ def user_info(searched_player, player):
         endstring += '{}: {} \n'.format(key, value)
     endstring += '\n'
     endstring += '**Inventory:** \n'
+    equipped = [value for key, value in searched_player.equipped.items()]
     for key, value in searched_player.inventory.items():
-        endstring += '{}: {} \n'.format(key, value)
+        if key in equipped:
+            endstring += '*{}: {}* \n'.format(key, value)
+        else:
+            endstring += '{}: {} \n'.format(key, value)
     endstring += '\n'
     endstring += '**Abilities:** \n'
     for key in searched_player.abilities:
@@ -190,6 +205,7 @@ def item_info(item):
     item = load_gear()[item]
     endstring = ''
     endstring += item['description'] + '\n\n'
+    endstring += 'Rarity: **{}** \n'.format(item['rarity'])
     endstring += 'Position: **{}** \n\n'.format(item['position'])
     for stat, value in item['stats'].items():
         endstring += '{}: **{}** \n'.format(stat, value)
@@ -200,6 +216,15 @@ def item_info(item):
             endstring += '**{}** \n'.format(ability)
 
     return form.basic(item2, endstring)
+
+
+def effect_info(effect):
+    effect2 = effect
+    effect = load_effects()[effect]
+    effectname = '{} {}'.format(effect2, effect['emoji'])
+    endstring = effect['description']
+
+    return form.basic(effectname, endstring)
 
 
 prefix = Tokens.prefix()
@@ -276,6 +301,18 @@ async def info(par, player, cha):
             return
 
         await cha.send(embed=item_info(par[2]))
+
+    if par[1] in ['ef', 'effect']:
+        if len(par) < 3:
+            await cha.send(embed=form.basic('Effects', all_effects()))
+            return
+
+        effects = load_effects()
+        if par[2] not in effects:
+            await cha.send(embed=form.basic('Not found', 'Effect not found'))
+            return
+
+        await cha.send(embed=effect_info(par[2]))
 
 
 async def commands(par, player, cha):

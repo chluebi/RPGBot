@@ -62,6 +62,10 @@ async def new_battle(par, msg, player):
         await msg.channel.send('You already are in a battle!')
         return
 
+    if len(player.abilities) < 1:
+        await msg.channel.send('Equip some items first!')
+        return
+
     if len(par) < 2:
         await msg.channel.send('Specify a battle! More info with {}info battle'.format(prefix))
         return

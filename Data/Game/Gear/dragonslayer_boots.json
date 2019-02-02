@@ -1,0 +1,14 @@
+{
+    "description": "The perfect pair of boots to go hitchhiking on a dragon's smashed skull.",
+    "position": "feet",
+    "rarity": "legendary",
+    "stats": {
+        "strength": 0,
+        "intelligence": 0,
+        "defense": 100,
+        "magic_defense": 100,
+        "precision": 0,
+        "health": 0
+    },
+    "abilities": []
+}

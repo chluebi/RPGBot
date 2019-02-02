@@ -57,6 +57,16 @@ def list_commands(player):
         key = 'Gives you a quick overview'
         endlist.append((value, key, inline))
 
+        inline = False
+        value = '{}equip <item>'.format(prefix)
+        key = 'Equip an item from your inventory.'
+        endlist.append((value, key, inline))
+
+        inline = True
+        value = '{}unequip <item|gear>'.format(prefix)
+        key = 'Unequip an item.'
+        endlist.append((value, key, inline))
+
         inline = True
         value = '{}info enemy <enemytype>'.format(prefix)
         key = 'Gives you a quick overview of an enemytype \n Leave out the last part to get a list of all enemies'

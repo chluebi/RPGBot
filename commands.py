@@ -6,6 +6,8 @@ from files import User
 from battle import new_battle
 from battle import Battle
 import formatting as form
+import asyncio
+import trading
 import discord
 import info
 
@@ -14,8 +16,14 @@ async def execute(par, msg):
     cha = msg.channel
     player = GET.player(msg.author.id)
 
+    if player is not None:
+        player.reload()
+
     if par[0] == 'info':
         await info.info(par, player, cha)
+
+    if par[0] in ['self', 'me']:
+        await info.info(['info', 'player', 'self'], player, cha)
 
     if par[0] == 'commands':
         list_of_commands = form.list_commands(player)
@@ -56,6 +64,23 @@ async def execute(par, msg):
                 await cha.send(equipped)
         else:
             await cha.send('Item not in your inventory')
+
+    if par[0] in ['ue', 'unequip']:
+        unequipped = player.unequip(par[1])
+        if unequipped is None:
+            await cha.send('Item not equipped')
+        elif unequipped == 'No gear':
+            await cha.send('You are not wearing any gear there.')
+        else:
+            await cha.send(unequipped)
+
+    if par[0] in ['s', 'sell']:
+        sold = await trading.sell_item(par, msg, player)
+
+    if par[0] in ['r', 'roll']:
+        rolled = await trading.roll(par, msg, player)
+        await asyncio.sleep(2)
+        await cha.send(rolled)
 
 
 async def answer(par, msg):

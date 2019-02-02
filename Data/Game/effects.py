@@ -1,16 +1,34 @@
 
 from formatting import Battleembed as bembed
 import formatting as form
+import json
+import os
 
 # effects that make you miss your turn
 cripef = ['freeze']
 
 
-emoji = {}
-emoji['freeze'] = '❄️'
-emoji['burn'] = '🔥'
+def load_effects():
+    effectpath = 'Data/Game/Effects/'
+    effectdata = {}
+    for file in os.listdir(effectpath):
+        name, ext = os.path.splitext(file)
+        effectdata[name] = json.load(open(effectpath + file))
+    return effectdata
 
-form.emoji = emoji
+
+effectdata = load_effects()
+
+
+def load_emoji():
+    emoji = {}
+    for key, value in effectdata.items():
+        emoji[key] = value['emoji']
+
+    return emoji
+
+
+form.emoji = load_emoji()
 print(form.emoji)
 
 

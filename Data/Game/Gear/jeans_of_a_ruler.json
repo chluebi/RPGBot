@@ -1,0 +1,14 @@
+{
+    "description": "There once was a big-legged prince who was stuck in this for 30 years.",
+    "position": "legs",
+    "rarity": "epic",
+    "stats": {
+        "strength": 0,
+        "intelligence": 0,
+        "defense": 25,
+        "magic_defense": 25,
+        "precision": 0,
+        "health": 100
+    },
+    "abilities": []
+}

@@ -19,6 +19,7 @@ def load_gear():
     for file in os.listdir(gearpath):
         name, ext = os.path.splitext(file)
         geardata[name] = json.load(open(gearpath + file))
+
     return geardata
 
 
@@ -49,6 +50,7 @@ class User:
                     data.pop(key)
             dict_to_obj(data, self)
             self.abilities = []
+            self.stats = {}
             self.save_self()
         self.user = GET.clientuser(self.id)
         print(self.__dict__)
@@ -73,6 +75,8 @@ class User:
         file_original = self.__dict__
         file = file_original.copy()
         file['user'] = 0
+        file['stats'] = 0
+        file['abilities'] = 0
         print(file)
         filename = os.path.join(User.playerpath, '{}.json'.format(self.name))
         with open(filename, "w+") as write_file:
@@ -81,15 +85,25 @@ class User:
         self.reload()
 
     def reload(self):
-        for stat, value in self.stats.items():
-            self.stats[stat] = 10 + self.level * 2
+        self.stats = {}
 
+        self.stats['strength'] = 10 + self.level * 2
+        self.stats['intelligence'] = 10 + self.level * 2
+        self.stats['defense'] = 10 + self.level * 2
+        self.stats['magic_defense'] = 10 + self.level * 2
+        self.stats['precision'] = 10 + self.level * 2
+
+        self.health = 100 + self.level * 20
+        self.abilities = []
         for pos, item in self.equipped.items():
             if item == 0:
                 continue
             item = geardata[item]
             for stat, value in item['stats'].items():
-                self.stats[stat] += value
+                if stat == 'health':
+                    self.health += value
+                else:
+                    self.stats[stat] += value
 
             for ability in item['abilities']:
                 if ability not in self.abilities:
@@ -114,7 +128,8 @@ class User:
                 self.inventory[item] += amount
 
             if self.inventory[item] < 1:
-                self.inventory.remove(item)
+                del self.inventory[item]
+                return 'Removed ``{}`` of **{}**'.format(amount, item)
 
         return 'You have received ``{}`` of **{}**'.format(amount, item)
 
@@ -167,6 +182,23 @@ class User:
         self.save_self()
 
         return 'Equipped **{}**'.format(item)
+
+    def unequip(self, item):
+        if not item in [value for key, value in self.equipped.items()]:
+            if not item in [key for key, value in self.equipped.items()]:
+                return None
+            else:
+                if self.equipped[item] != 0:
+                    temp = self.equipped[item]
+                    self.equipped[item] = 0
+                    return 'Unequipped **{} ({})**'.format(temp, item)
+                else:
+                    return 'No gear'
+
+        self.equipped[geardata[item]['position']] = 0
+        self.save_self()
+
+        return 'Unequipped **{} ({})**'.format(item, geardata[item]['position'])
 
 
 class Item:

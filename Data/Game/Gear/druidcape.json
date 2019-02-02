@@ -1,0 +1,14 @@
+{
+    "description": "Its creator supposedly died in a plane accident.",
+    "position": "chest",
+    "rarity": "common",
+    "stats": {
+        "strength": 0,
+        "intelligence": 5,
+        "defense": 0,
+        "magic_defense": 3,
+        "precision": 0,
+        "health": 10
+    },
+    "abilities": ["healwound"]
+}
