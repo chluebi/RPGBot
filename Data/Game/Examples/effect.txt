@@ -1,0 +1,4 @@
+{
+	"description":"Deals 5 damage each turn. Stops Freeze.", #description for info command
+	"emoji":"🔥" #emoji for visualization
+}

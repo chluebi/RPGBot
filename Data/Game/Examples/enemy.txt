@@ -1,0 +1,38 @@
+{
+    "description": "Some info",
+    "health": [
+        10, #base health
+        10  #health added per level
+    ],
+    "abilities": [
+        "strike" #abilities the enemy can use
+    ],
+    "stats": {
+        "strength": [
+            10, #base value
+            2   #value added per level
+        ],
+        "intelligence": [
+            3,
+            1
+        ],
+        "defense": [
+            4,
+            1
+        ],
+        "magic_defense": [
+            5,
+            1
+        ],
+        "precision": [
+            6,
+            1
+        ]
+    },
+    "drops": [ #not in the game *yet*
+        [
+            "gold", 
+            2
+        ]
+    ]
+}

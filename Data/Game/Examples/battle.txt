@@ -1,0 +1,12 @@
+{
+	"rarity":3, #the higher the more likely to show up
+	"min_level":1, #every player below this level won't be able to play the battle
+	"enemies":[
+		["slime",2], #enemy and level
+		["witch",2]
+	],
+	"loot":[
+		["gold",50], #item and amount
+		["xp",70]
+	]
+}

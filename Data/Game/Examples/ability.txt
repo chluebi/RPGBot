@@ -1,0 +1,24 @@
+{
+    "description": "Some info",
+    "target": [
+        "enemy|ally|enemy_all|ally_all",
+        1 #only relevant for random targets, leave it at 1
+    ],
+    "damage": [
+        20, #base value
+        0.3, #strength scaling
+        0.1 #precision scaling
+    ],
+    "magic_damage": [
+        10, #base value
+        0.5, #intelligence scaling
+        0.2 #precision scaling
+    ],
+    "cooldown": 0, #how many times the caster has to wait until they can use the ability again
+    "effects": [
+        [
+            "burn", #effect
+            "2" #amount of turns the effect is added
+        ]
+    ]
+}
