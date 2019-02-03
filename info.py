@@ -72,20 +72,40 @@ def abilitiy_info(ability):
     if mdmg[0] < 0 or mdmg[1] < 0:
         endstring += 'Heals for **{} (+ {}%  of intelligence) (+ {}%  of precision)** damage \n'.format(mdmg[0], mdmg[1] * 100, dmg[2] * 100)
 
+    if 'random_multiplier' in abilitydata:
+        ra = abilitydata['random_multiplier']
+        endstring += 'Random Multiplier of **{}%** to **{}%** \n'.format(ra[0] * 100, ra[1] * 100)
+
+    if 'crit_chance' in abilitydata:
+        cr = abilitydata['crit_chance']
+        endstring += 'Chance of **{}%** to mulitiply damage by **{}**% \n'.format(cr[0] * 100, cr[1] * 100)
+
     ef = abilitydata['effects']
     if len(ef) > 1:
         endstring += '\n'
         endstring += 'Gives the target(s) the following effects: '
-        for effect, duration in ef[:-2]:
+        for full_effect in ef[:-2]:
+            effect = full_effect[0]
+            duration = full_effect[1]
             effect = '**{}**'.format(effect)
-            endstring += '**{}** ( {} turns), '.format(effect, duration)
-        endstring += '**{0}** ( {1} turns) '.format(ef[-2][0], str(ef[-2][1]))
-        endstring += 'and **{0}** ( {1} turns) '.format(ef[-1][0], str(ef[-1][1]))
+            endstring += '**{}** ( {} turns)'.format(effect, duration)
+            if len(full_effect) > 2:
+                endstring += ' ({}%  chance)'.format(full_effect[2] * 100)
+            endstring += ', '
+        if len(ef[-2]) > 2:
+            endstring += '**{0}** ( {1} turns) ({2}%  chance)'.format(ef[-2][0], str(ef[-2][1]), str(ef[-2][2]))
+        else:
+            endstring += '**{0}** ( {1} turns) '.format(ef[-2][0], str(ef[-2][1]))
+        if len(ef[-1]) > 2:
+            endstring += 'and **{0}** ( {1} turns) ({2}%  chance)'.format(ef[-2][0], str(ef[-2][1]), str(ef[-2][2]))
+        else:
+            endstring += 'and **{0}** ( {1} turns) '.format(ef[-1][0], str(ef[-1][1]))
     elif len(ef) == 1:
         endstring += '\n'
         endstring += 'Gives the target(s) the following effect: '
         endstring += '**{0}** ( {1} turns)'.format(ef[0][0], str(ef[0][1]))
 
+    print(endstring)
     return form.basic('Ability info', endstring)
 
 
