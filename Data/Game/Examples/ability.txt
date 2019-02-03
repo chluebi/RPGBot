@@ -14,11 +14,20 @@
         0.5, #intelligence scaling
         0.2 #precision scaling
     ],
+    "random_multiplier": [ *OPTIONAL*
+        1, #lower limit
+        1.3 #upper limit
+    ],
+    "crit_chance": [
+        0.2, #chance for a critical hit
+        1.5 #critical multiplier
+    ], /*OPTIONAL*
     "cooldown": 0, #how many times the caster has to wait until they can use the ability again
     "effects": [
         [
             "burn", #effect
             "2" #amount of turns the effect is added
+            "0.9" #chance that the effect is added OPTIONAL, DEFAULT IS 1
         ]
     ]
 }

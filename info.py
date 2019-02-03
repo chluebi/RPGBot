@@ -166,6 +166,7 @@ def ingame_enemy_info(enemy):
 
 
 def user_info(searched_player, player):
+    searched_player.reload()
     searched_clientuser = GET.clientuser(searched_player.id)
     endstring = ''
     endstring += '**ID:** {} \n'.format(searched_player.id)

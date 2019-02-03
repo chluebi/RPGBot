@@ -1,6 +1,7 @@
 
 from . import effects as ef
 from formatting import Battleembed as bembed
+from random import randint
 
 
 def cast_ability(ability, target, attacker):
@@ -19,17 +20,33 @@ def cast_ability(ability, target, attacker):
         damage = round(damage * (100 / (100 + target.stats['defense'])))
     else:
         damage = round(damage)
-    target.health -= damage
 
     magic_damage = ability[1]['magic_damage'][0] + attacker.stats['intelligence'] * ability[1]['magic_damage'][1] + attacker.stats['precision'] * ability[1]['magic_damage'][2]
     if magic_damage > 0:
         magic_damage = round(magic_damage * (100 / (100 + target.stats['magic_defense'])))
     else:
         magic_damage = round(magic_damage)
-    target.health -= magic_damage
+
+    total_damage = damage + magic_damage
+
+    if 'random_multiplier' in ability[1]:
+        total_damage = total_damage * randint(ability[1]['random_multiplier'][0] * 100, ability[1]['random_multiplier'][1] * 100) / 100
+
+    if 'crit_chance' in ability[1]:
+        if randint(1, 100) <= ability[1]['crit_chance'][0] * 100:
+            total_damage = total_damage * ability[1]['crit_chance'][1]
+
+    total_damage = round(total_damage)
+
+    target.health -= total_damage
 
     if len(ability[1]['effects']) > 0:
-        for effect, duration in ability[1]['effects']:
+        for full_effect in ability[1]['effects']:
+            effect = full_effect[0]
+            duration = full_effect[1]
+            if len(full_effect) > 2:
+                if randint(1, 100) > full_effect[2] * 100:
+                    continue
             print('added {} {} for to {}'.format(effect, duration, target.name))
             if not ef.has_effect(effect, target):
                 target.effects.append([effect, duration])

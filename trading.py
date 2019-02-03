@@ -91,4 +91,4 @@ async def roll(par, msg, player):
 
     await player.give_item('gold', -100)
     await player.give_item(drop, 1)
-    return 'Rolled {} for 100 gold'.format(drop)
+    return 'Rolled **{}** for 100 gold'.format(drop)

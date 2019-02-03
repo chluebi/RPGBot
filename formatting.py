@@ -253,7 +253,7 @@ class Battleembed:
             endstring += '{} + **{}** + *{}* = {}'.format(before, damage, mdamage, target.health)
         if len(ability[1]['effects']) > 0:
             endstring += '\n *Effects:* \n'
-            endstring += ', '.join(['{} - {} turns'.format(effect, length) for effect, length in ability[1]['effects']])
+            endstring += ', '.join(['{} - {} turns'.format(fulleffect[0], fulleffect[1]) for fulleffect in ability[1]['effects']])
 
         return endstring
 
