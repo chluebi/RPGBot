@@ -17,7 +17,6 @@ def load_gear():
     gearpath = 'Data/Game/Gear/'
     geardata = {}
     for file in os.listdir(gearpath):
-        print(file)
         name, ext = os.path.splitext(file)
         geardata[name] = json.load(open(gearpath + file))
 

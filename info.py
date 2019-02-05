@@ -93,11 +93,11 @@ def abilitiy_info(ability):
                 endstring += ' ({}%  chance)'.format(full_effect[2] * 100)
             endstring += ', '
         if len(ef[-2]) > 2:
-            endstring += '**{0}** ( {1} turns) ({2}%  chance)'.format(ef[-2][0], str(ef[-2][1]), str(ef[-2][2]))
+            endstring += '**{0}** ( {1} turns) ({2}%  chance)'.format(ef[-2][0], str(ef[-2][1]), str(ef[-2][2]) * 100)
         else:
             endstring += '**{0}** ( {1} turns) '.format(ef[-2][0], str(ef[-2][1]))
         if len(ef[-1]) > 2:
-            endstring += 'and **{0}** ( {1} turns) ({2}%  chance)'.format(ef[-2][0], str(ef[-2][1]), str(ef[-2][2]))
+            endstring += 'and **{0}** ( {1} turns) ({2}%  chance)'.format(ef[-2][0], str(ef[-2][1]), str(ef[-2][2]) * 100)
         else:
             endstring += 'and **{0}** ( {1} turns) '.format(ef[-1][0], str(ef[-1][1]))
     elif len(ef) == 1:
@@ -271,20 +271,25 @@ async def info(par, player, cha):
     if par[1] in ['b', 'battle', 'battles']:
         if len(par) < 3:
             await cha.send(embed=form.basic('Battles', all_battles(player)))
+            return
         else:
             embed = Battles.battle_info(par[2])
             await cha.send(embed=embed)
+            return
 
     if par[1] in ['a', 'abilities', 'ability']:
         if len(par) < 3:
             await cha.send(embed=form.basic('Abilities', all_abilities(player)))
+            return
         else:
             embed = abilitiy_info(par[2])
             await cha.send(embed=embed)
+            return
 
     if par[1] in ['e', 'enemy']:
         if len(par) < 3:
             await cha.send(embed=form.basic('Enemies', all_enemies()))
+            return
         else:
             embed = enemy_info(par[2])
             if embed != None:
@@ -299,14 +304,17 @@ async def info(par, player, cha):
                     embed = ingame_enemy_info(enemy)
                 else:
                     embed = form.basic('Not found', 'enemy not found (enemy not found in battle)')
+                    return
             else:
                 embed = form.basic('Not found', 'enemy not found (not in battle)')
+                return
 
             if embed != None:
                 await cha.send(embed=embed)
                 return
             else:
                 await cha.send(embed=form.basic('Not found', 'enemy not found'))
+                return
 
     if par[1] in ['user', 'player', 'u']:
         if len(par) < 3:
@@ -320,8 +328,10 @@ async def info(par, player, cha):
 
         if searched_player is None:
             await cha.send(embed=form.basic('Not found', 'Player not found'))
+            return
         else:
             await cha.send(embed=user_info(searched_player, player))
+            return
 
     if par[1] in ['item', 'gear', 'i']:
         if len(par) < 3:
@@ -334,6 +344,7 @@ async def info(par, player, cha):
             return
 
         await cha.send(embed=item_info(par[2]))
+        return
 
     if par[1] in ['ef', 'effect']:
         if len(par) < 3:
@@ -346,6 +357,45 @@ async def info(par, player, cha):
             return
 
         await cha.send(embed=effect_info(par[2]))
+        return
+
+    if len(par) == 2:
+        all_data = {}
+        all_data['ef'] = load_effects()
+        all_data['e'] = load_enemies()
+        all_data['i'] = load_gear()
+        all_data['a'] = load_abilities()
+        all_data['b'] = load_battles()[1]
+
+        all_data2 = all_data.copy()
+        singular_data = {}
+
+        for category, value in all_data2.items():
+            for key, value2 in value.items():
+                singular_data[key] = value2
+                singular_data[key]['category'] = category
+
+        results = []
+
+        for key, value in singular_data.items():
+            if par[1] in key:
+                results.append((key, value))
+
+        print(results)
+
+        if len(results) < 1:
+            return
+
+        cat = results[0][1]
+        print(cat)
+        cat = cat['category']
+        key = results[0][0]
+
+        par = ['info', cat, key]
+
+        print(par)
+
+        await info(par, player, cha)
 
 
 async def commands(par, player, cha):

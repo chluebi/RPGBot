@@ -248,7 +248,7 @@ class Battleembed:
         before = hbefore
         endstring = '{} used {} on {}'.format(attacker.name, ability[0], target.name)
         endstring += '\n'
-        if damage > 0 or mdamage > 0:
+        if total_damage > 0:
             endstring += '{} - **{}** = {}'.format(before, total_damage, target.health)
         else:
             endstring += '{} + **{}** = {}'.format(before, total_damage, target.health)

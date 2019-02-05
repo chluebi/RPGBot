@@ -13,7 +13,7 @@ def choose_ability(battle, char):
         raise Exception('char has no side')
 
     for character in enemyside:
-        for effect in not ef.nottargetef:
+        for effect in ef.nottargetef:
             if ef.has_effect(effect, char):
                 enemyside.remove(character)
 
@@ -26,7 +26,9 @@ def choose_ability(battle, char):
 
     abi = random.choice(char.abilities)
     abistuff = abidata[abi]
-    target = abistuff['target']
+    target = abistuff['target'][0]
+    print(abistuff)
+    print(target)
     if target == 'enemy':
         return (random.choice(enemyside), abi)
     elif target == 'ally':

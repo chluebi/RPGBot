@@ -31,8 +31,9 @@ def load_emoji():
 def has_effect_list(eflist, target):
     end = False
     for ef in eflist:
-        end = has_effect(ef, target) or ef
-    return True
+        end = has_effect(ef, target) or end
+
+    return end
 
 
 def has_effect(ef, target):

@@ -20,7 +20,6 @@ def load_abilities():
     abilitypath = 'Data/Game/Abilities/'
     abilitydata = {}
     for file in os.listdir(abilitypath):
-        print(file)
         name, ext = os.path.splitext(file)
         abilitydata[name] = json.load(open(abilitypath + file))
     return abilitydata
@@ -397,6 +396,9 @@ class Player:
         # print(self.__dict__)
 
     async def use_ability(self, battle, side, par, msg):
+        if par[1] in ['-1', 'pass', 'p']:
+            return '{} passed their turn.'.format(self.name)
+
         if side == 1:
             allyside = [ally if ally.health > 0 else None for ally in battle.side1]
             enemyside = [enemy if enemy.health > 0 else None for enemy in battle.side2]
@@ -439,7 +441,7 @@ class Player:
             if None in target:
                 await msg.channel.send('this character is already dead')
                 return
-            if ef.has_effect_list(ef.nottargetef, target):
+            if ef.has_effect_list(ef.nottargetef, target[0]):
                 await msg.channel.send('this character can not be targeted')
                 return
         elif target == 'ally':
