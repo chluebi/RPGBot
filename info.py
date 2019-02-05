@@ -35,6 +35,7 @@ def all_abilities(player):
 
 def abilitiy_info(ability):
     data = load_abilities()
+    print(data)
 
     if ability not in data:
         return form.basic('Not found', 'ability not found')
@@ -378,6 +379,11 @@ async def info(par, player, cha):
         results = []
 
         for key, value in singular_data.items():
+            if par[1] == key:
+                if len(results) < 1:
+                    results.append((key, value))
+                else:
+                    results[0] = (key, value)
             if par[1] in key:
                 results.append((key, value))
 
