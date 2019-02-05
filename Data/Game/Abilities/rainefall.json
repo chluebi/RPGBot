@@ -1,5 +1,5 @@
 {
-    "description": "Rainebow's ability,
+    "description": "Rainebow's ability",
     "target": [
         "enemy",
         1
@@ -14,14 +14,14 @@
         0.75,
         0.5
     ],
-    "random_multiplier": [ *OPTIONAL*
-        1, #lower limit
-        1.3 #upper limit
+    "random_multiplier": [ 
+        1, 
+        1.3 
     ],
     "crit_chance": [
         0.4,
         2
-    ], /*OPTIONAL*
+    ], 
     "cooldown": 1,
     "effects": [
         [
@@ -30,7 +30,7 @@
             "0.5",
         ],
         [
-            "burn",
+            "curse",
             "2",
             "0.5",
         ]

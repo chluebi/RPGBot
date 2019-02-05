@@ -1,15 +1,13 @@
 {
-    "description": "chluebi 13/01/2019
-                    I owe you something
-                    I'll name a weapon after you in the game xD", 
+    "description": "chluebi 13/01/2019 I owe you something. \n I'll name a weapon after you in the game xD", 
     "position": "main",
     "rarity": "epic",
     "stats": {
         "strength": 0,
-        "intelligence": 7,
+        "intelligence": 27,
         "defense": 0,
         "magic_defense": 0,
-        "precision": 7,
+        "precision": 27,
         "health": 0
     },
     "abilities": ["rainefall"]
