@@ -1,0 +1,17 @@
+{
+    "description": "chluebi 13/01/2019
+                    I owe you something
+                    I'll name a weapon after you in the game xD", 
+    "position": "main",
+    "rarity": "epic",
+    "stats": {
+        how much of each stat should be added
+        "strength": 0,
+        "intelligence": 7,
+        "defense": 0,
+        "magic_defense": 0,
+        "precision": 7,
+        "health": 0
+    },
+    "abilities": ["rainefall"]
+}
