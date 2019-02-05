@@ -1,0 +1,14 @@
+{
+    "description": "Does not imply that your feet are short",
+    "position": "secondary",
+    "rarity": "common",
+    "stats": {
+        "strength": 5,
+        "intelligence": 0,
+        "defense": 0,
+        "magic_defense": 0,
+        "precision": 2,
+        "health": 10
+    },
+    "abilities": ["stab","slice"]
+}

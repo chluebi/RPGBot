@@ -1,0 +1,14 @@
+{
+    "description": "You just have to wait for ten hours and this dagger will deal tons of damage!",
+    "position": "main",
+    "rarity": "very rare",
+    "stats": {
+        "strength": 3,
+        "intelligence": 10,
+        "defense": 0,
+        "magic_defense": 0,
+        "precision": 40,
+        "health": 0
+    },
+    "abilities": ["stab","backstab","execute"]
+}

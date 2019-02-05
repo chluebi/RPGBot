@@ -1,0 +1,14 @@
+{
+    "description": "May or not be a cleaning utility",
+    "position": "secondary",
+    "rarity": "rare",
+    "stats": {
+        "strength": 0,
+        "intelligence": 20,
+        "defense": 0,
+        "magic_defense": 0,
+        "precision": 0,
+        "health": 30
+    },
+    "abilities": ["clease_mind"]
+}

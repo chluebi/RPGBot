@@ -1,0 +1,14 @@
+{
+    "description": "It may be weird, but also magical",
+    "position": "chest",
+    "rarity": "common",
+    "stats": {
+        "strength": 0,
+        "intelligence": 5,
+        "defense": 0,
+        "magic_defense": 20,
+        "precision": 0,
+        "health": 0
+    },
+    "abilities": []
+}

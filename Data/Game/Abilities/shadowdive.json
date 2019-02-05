@@ -1,0 +1,24 @@
+{
+    "description": "Go away, never to be seen again.",
+    "target": [
+        "self",
+        1
+    ],
+    "damage": [
+        0,
+        0,
+        0
+    ],
+    "magic_damage": [
+        0,
+        0,
+        0
+    ],
+    "cooldown": 6,
+    "effects": [
+        [
+            "shadowed",
+            3
+        ]
+    ]
+}

@@ -1,0 +1,14 @@
+{
+    "description": "Kill 4 cows and we can talk",
+    "position": "feet",
+    "rarity": "very common",
+    "stats": {
+        "strength": 0,
+        "intelligence": 0,
+        "defense": 5,
+        "magic_defense": 5,
+        "precision": 0,
+        "health": 10
+    },
+    "abilities": []
+}

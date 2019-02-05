@@ -1,0 +1,14 @@
+{
+    "description": "Keep. Your Hands. On The Handle. Please.",
+    "position": "main",
+    "rarity": "epic",
+    "stats": {
+        "strength": 40,
+        "intelligence": 30,
+        "defense": 0,
+        "magic_defense": 0,
+        "precision": 10,
+        "health": 30
+    },
+    "abilities": ["fire_slice","firestorm"]
+}

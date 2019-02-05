@@ -1,0 +1,14 @@
+{
+    "description": "This shield is for all people who want a shield but also don't want a shield.",
+    "position": "main",
+    "rarity": "rare",
+    "stats": {
+        "strength": 20,
+        "intelligence": 0,
+        "defense": 40,
+        "magic_defense": 20,
+        "precision": 0,
+        "health": 30
+    },
+    "abilities": []
+}

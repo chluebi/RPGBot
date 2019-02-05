@@ -1,0 +1,29 @@
+{
+    "description": "The most popular move for people who like to be disliked",
+    "target": [
+        "enemy",
+        1
+    ],
+    "damage": [
+        25,
+        0,
+        0.5
+    ],
+    "magic_damage": [
+        0,
+        0,
+        0
+    ],
+    "crit_chance": [
+        0.5,
+        2
+    ],
+    "cooldown": 1,
+    "effects": [
+        [
+            "bleed",
+            2,
+            0.4
+        ]
+    ]
+}

@@ -20,9 +20,13 @@ def load_abilities():
     abilitypath = 'Data/Game/Abilities/'
     abilitydata = {}
     for file in os.listdir(abilitypath):
+        print(file)
         name, ext = os.path.splitext(file)
         abilitydata[name] = json.load(open(abilitypath + file))
     return abilitydata
+
+
+AI.abidata = load_abilities()
 
 
 def load_battles():
@@ -387,6 +391,7 @@ class Player:
         # print(self.user)
         self.name = self.user.mention
         self.health = 100 + self.level * 20
+        self.maxhealth = 100 + self.level * 20
         self.isplayer = True
         self.alive = True
         # print(self.__dict__)
@@ -434,6 +439,9 @@ class Player:
             if None in target:
                 await msg.channel.send('this character is already dead')
                 return
+            if ef.has_effect_list(ef.nottargetef, target):
+                await msg.channel.send('this character can not be targeted')
+                return
         elif target == 'ally':
             abc = 'abcdefghijklmnopqrstuvwxyz'
             # if len(alive_allyside) < 2:
@@ -451,6 +459,8 @@ class Player:
             target = alive_enemyside
         elif target == 'ally_all':
             target = alive_allyside
+        elif target == 'self':
+            target = self
         elif target == 'all':
             pass
         else:
@@ -475,6 +485,7 @@ class Enemy:
             raise Exception('Enemy type does not exist')
         self.health = self.health[0] + self.health[1] * level
         self.health = round(self.health)
+        self.maxhealth = self.health
         self.effects = []
         self.isplayer = False
         self.alive = True

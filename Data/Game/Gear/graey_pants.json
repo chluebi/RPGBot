@@ -1,0 +1,14 @@
+{
+    "description": "Gray or Grey? no idea, I can't spell anyway",
+    "position": "legs",
+    "rarity": "common",
+    "stats": {
+        "strength": 0,
+        "intelligence": 0,
+        "defense": 10,
+        "magic_defense": 3,
+        "precision": 0,
+        "health": 0
+    },
+    "abilities": []
+}

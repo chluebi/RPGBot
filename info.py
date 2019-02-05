@@ -120,9 +120,21 @@ def all_enemies():
 
 def all_items():
     data = load_gear()
-    itemlist = ''
+    groups = {}
     for key, value in data.items():
-        itemlist += '**{}** \n'.format(key)
+        groups[value['position']] = []
+
+    for key, value in data.items():
+        groups[value['position']].append((key, value))
+
+    for group_name, group in groups.items():
+        print(group)
+
+    itemlist = ''
+    for group_name, group in groups.items():
+        itemlist += '\n **{}** \n'.format(group_name)
+        for key, value in group:
+            itemlist += '{} \n'.format(key)
 
     return itemlist
 

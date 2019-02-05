@@ -1,0 +1,24 @@
+{
+    "description": "It helps when you have to deal with relatives",
+    "target": [
+        "ally",
+        1
+    ],
+    "damage": [
+        0,
+        0,
+        0
+    ],
+    "magic_damage": [
+        0,
+        0,
+        0
+    ],
+    "cooldown": 4,
+    "effects": [
+        [
+            "cleanse",
+            2
+        ]
+    ]
+}

@@ -1,0 +1,14 @@
+{
+    "description": "Death Death Death",
+    "position": "main",
+    "rarity": "epic",
+    "stats": {
+        "strength": 100,
+        "intelligence": 10,
+        "defense": 0,
+        "magic_defense": 0,
+        "precision": 100,
+        "health": 50
+    },
+    "abilities": ["slice","cut_apart","curse"]
+}

@@ -1,8 +1,9 @@
 from discord import Embed
 from core import Tokens
+from Data.Game import effects as ef
 
 prefix = Tokens.prefix()
-#emoji = {}
+emoji = ef.load_emoji()
 
 
 def basic(tit, des):
@@ -210,7 +211,7 @@ class Battleembed:
         enemies_print = []
         for enemy in enemies:
             endstring = ''
-            if enemy.health > 0:
+            if enemy.health > 0 or ef.has_effect_list(ef.nottargetef, enemy):
                 endstring += '{}({}hp) '.format(enemy.name, enemy.health)
                 for effect in enemy.effects:
                     if effect[0] in emoji:
@@ -243,17 +244,19 @@ class Battleembed:
         embed = Embed(title='Battle Event', description=text)
         return text
 
-    def abipart(ability, target, attacker, damage, mdamage, hbefore):
+    def abipart(ability, target, attacker, total_damage, hbefore):
         before = hbefore
         endstring = '{} used {} on {}'.format(attacker.name, ability[0], target.name)
         endstring += '\n'
         if damage > 0 or mdamage > 0:
-            endstring += '{} - **{}** - *{}* = {}'.format(before, damage, mdamage, target.health)
+            endstring += '{} - **{}** = {}'.format(before, total_damage, target.health)
         else:
-            endstring += '{} + **{}** + *{}* = {}'.format(before, damage, mdamage, target.health)
+            endstring += '{} + **{}** = {}'.format(before, total_damage, target.health)
+        '''
         if len(ability[1]['effects']) > 0:
             endstring += '\n *Effects:* \n'
             endstring += ', '.join(['{} - {} turns'.format(fulleffect[0], fulleffect[1]) for fulleffect in ability[1]['effects']])
+        '''
 
         return endstring
 

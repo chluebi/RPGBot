@@ -1,0 +1,14 @@
+{
+    "description": "Good Knight",
+    "position": "main",
+    "rarity": "rare",
+    "stats": {
+        "strength": 30,
+        "intelligence": 0,
+        "defense": 0,
+        "magic_defense": 0,
+        "precision": 10,
+        "health": 100
+    },
+    "abilities": ["stab","slice"]
+}

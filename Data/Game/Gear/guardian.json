@@ -1,0 +1,14 @@
+{
+    "description": "No matter how big your ego is, this shield is bigger.",
+    "position": "secondary",
+    "rarity": "very rare",
+    "stats": {
+        "strength": 0,
+        "intelligence": 0,
+        "defense": 60,
+        "magic_defense": 40,
+        "precision": 0,
+        "health": 100
+    },
+    "abilities": ["protect"]
+}

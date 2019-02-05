@@ -1,0 +1,24 @@
+{
+    "description": "import swear words",
+    "target": [
+        "enemy",
+        1
+    ],
+    "damage": [
+        0,
+        0,
+        0
+    ],
+    "magic_damage": [
+        0,
+        0,
+        0
+    ],
+    "cooldown": 2,
+    "effects": [
+        [
+            "curse",
+            3
+        ]
+    ]
+}

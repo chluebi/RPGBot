@@ -1,0 +1,14 @@
+{
+    "description": "Magicians obviously don't have other boots than normal people, it's just a placebo",
+    "position": "feet",
+    "rarity": "common",
+    "stats": {
+        "strength": 0,
+        "intelligence": 10,
+        "defense": 5,
+        "magic_defense": 5,
+        "precision": 0,
+        "health": 0
+    },
+    "abilities": []
+}

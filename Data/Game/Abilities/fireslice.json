@@ -1,0 +1,29 @@
+{
+    "description": "Slices both Enemies and Water Cake.",
+    "target": [
+        "enemy",
+        1
+    ],
+    "damage": [
+        20,
+        0.5,
+        0.1
+    ],
+    "magic_damage": [
+        10,
+        0.5,
+        0.5
+    ],
+    "crit_chance": [
+        0.5,
+        1.4
+    ],
+    "cooldown": 1,
+    "effects": [
+        [
+            "burn",
+            2,
+            1
+        ]
+    ]
+}

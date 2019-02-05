@@ -1,0 +1,14 @@
+{
+    "description": "If a stone hits your head you will now only be 99% dead",
+    "position": "head",
+    "rarity": "very common",
+    "stats": {
+        "strength": 0,
+        "intelligence": 0,
+        "defense": 20,
+        "magic_defense": 10,
+        "precision": 0,
+        "health": 20
+    },
+    "abilities": []
+}

@@ -60,4 +60,4 @@ def cast_ability(ability, target, attacker):
                 target.effects[effect_index][1] = to_longer[1]
             print(target.effects)
 
-    return bembed.abipart(ability, target, attacker, damage, magic_damage, hbefore)
+    return bembed.abipart(ability, target, attacker, total_damage, hbefore)

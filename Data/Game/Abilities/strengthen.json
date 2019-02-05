@@ -1,0 +1,24 @@
+{
+    "description": "To get stronk.",
+    "target": [
+        "self",
+        1
+    ],
+    "damage": [
+        0,
+        0,
+        0
+    ],
+    "magic_damage": [
+        0,
+        0,
+        0
+    ],
+    "cooldown": 3,
+    "effects": [
+        [
+            "strength",
+            3
+        ]
+    ]
+}

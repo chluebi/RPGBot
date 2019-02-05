@@ -1,0 +1,14 @@
+{
+    "description": "Delivers Deadly Delicious Diets",
+    "position": "secondary",
+    "rarity": "very common",
+    "stats": {
+        "strength": 0,
+        "intelligence": 0,
+        "defense": 0,
+        "magic_defense": 0,
+        "precision": 2,
+        "health": 0
+    },
+    "abilities": ["stab"]
+}

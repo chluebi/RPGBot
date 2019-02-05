@@ -1,0 +1,14 @@
+{
+    "description": "Long and freezo",
+    "position": "main",
+    "rarity": "rare",
+    "stats": {
+        "strength": 0,
+        "intelligence": 30,
+        "defense": 0,
+        "magic_defense": 0,
+        "precision": 10,
+        "health": 0
+    },
+    "abilities": ["icecone","frostnova"]
+}

@@ -1,0 +1,14 @@
+{
+    "description": "I could do this all day.",
+    "position": "feet",
+    "rarity": "rare",
+    "stats": {
+        "strength": 5,
+        "intelligence": 0,
+        "defense": 5,
+        "magic_defense": 5,
+        "precision": 0,
+        "health": 20
+    },
+    "abilities": ["stomp"]
+}

@@ -1,0 +1,14 @@
+{
+    "description": "Your normal knife",
+    "position": "secondary",
+    "rarity": "common",
+    "stats": {
+        "strength": 0,
+        "intelligence": 0,
+        "defense": 0,
+        "magic_defense": 0,
+        "precision": 10,
+        "health": 0
+    },
+    "abilities": ["stab","backstab"]
+}

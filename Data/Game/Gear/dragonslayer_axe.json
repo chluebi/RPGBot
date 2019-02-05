@@ -1,0 +1,14 @@
+{
+    "description": "Everyone can slice a dragon in half, but nobody has tried it yet.",
+    "position": "main",
+    "rarity": "legendary",
+    "stats": {
+        "strength": 150,
+        "intelligence": 0,
+        "defense": 0,
+        "magic_defense": 0,
+        "precision": 0,
+        "health": 200
+    },
+    "abilities": ["slice","brutalize"]
+}

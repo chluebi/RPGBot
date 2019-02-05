@@ -1,0 +1,14 @@
+{
+    "description": "Wait in the shadows day and night until cute cats appear and you just HAVE TO pet them",
+    "position": "chest",
+    "rarity": "epic",
+    "stats": {
+        "strength": 0,
+        "intelligence": 0,
+        "defense": 30,
+        "magic_defense": 10,
+        "precision": 20,
+        "health": 0
+    },
+    "abilities": ["strengthen"]
+}

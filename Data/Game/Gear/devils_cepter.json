@@ -1,0 +1,14 @@
+{
+    "description": "Ye, your enemies are pretty much dead at this point",
+    "position": "main",
+    "rarity": "legendary",
+    "stats": {
+        "strength": 0,
+        "intelligence": 200,
+        "defense": 0,
+        "magic_defense": 0,
+        "precision": 100,
+        "health": 0
+    },
+    "abilities": ["fireball","firestorm","curse"]
+}

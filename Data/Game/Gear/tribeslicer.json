@@ -1,0 +1,14 @@
+{
+    "description": "Not reccomended by tribes.",
+    "position": "main",
+    "rarity": "rare",
+    "stats": {
+        "strength": 40,
+        "intelligence": 0,
+        "defense": 0,
+        "magic_defense": 0,
+        "precision": 10,
+        "health": 40
+    },
+    "abilities": ["slice","brutalize"]
+}

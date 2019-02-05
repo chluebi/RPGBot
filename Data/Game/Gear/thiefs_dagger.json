@@ -1,0 +1,14 @@
+{
+    "description": "No guarantee that a thief actually owned this one",
+    "position": "main",
+    "rarity": "common",
+    "stats": {
+        "strength": 0,
+        "intelligence": 2,
+        "defense": 0,
+        "magic_defense": 0,
+        "precision": 15,
+        "health": 0
+    },
+    "abilities": ["stab","backstab"]
+}

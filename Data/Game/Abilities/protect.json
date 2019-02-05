@@ -1,0 +1,24 @@
+{
+    "description": "Slices both Enemies and Cake.",
+    "target": [
+        "ally",
+        1
+    ],
+    "damage": [
+        0,
+        0,
+        0
+    ],
+    "magic_damage": [
+        0,
+        0,
+        0
+    ],
+    "cooldown": 3,
+    "effects": [
+        [
+            "shielded",
+            2
+        ]
+    ]
+}
