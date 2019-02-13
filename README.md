@@ -5,8 +5,31 @@
 
 ## Combat
 
+### Basics
+
+#### Commands
+- use <ability> <target>
+- endturn: end your turn
+- info <something>
+- concede: end the game
+
+
+### The cycle of a match
+
+- According to the speeds of the different characters, the order gets decided
+- Each characters takes their turn:
+⋅⋅- Start of Turn effect applies
+⋅⋅- The character is refilled with 20% of their Mana
+..- The character gets 3 action points
+⋅⋅- The character uses their abilities
+⋅⋅- The character either uses "endturn" or runs out of time
+⋅⋅- End of Turn effect applies
+
+Repeat
+
 ### Stats
 - Health, How much Damage you can take
+- Mana, Used up by abilities
 
 - Strength, incresases Strength attacks
 - Intelligence, increases Magic attacks
@@ -21,6 +44,7 @@
 
 #### Rough calculations how much every stat is worth
 - Health: 1 powerlevel = 4 health
+- Mana: 1 powerlevel = 4 health
 - Strength, Intelligence, Archery, Scoundrel: 1 powerlevel = 3 points
 - Defense, Magic Defense: 1 powerlevel = 5 points
 - Precision 1 powerlevel = 0.5 precision
@@ -51,6 +75,10 @@
 - Damagetype = options: physical, magic, absolute or mixed*
 - Abilitytype = passive, enemy, ally, any, (random, enemy|ally|all, amount of targets), enemyall, allyall, all*
 
+- Energycost: How much energy it costs to use this ability*
+- Manacost: How much mana it costs to use this ability
+- Healthcost: How much health it costs to use this ability
+
 ##### Important: Passive Abilities are special, they do not deal any direct damage and just apply all the effects at the beginning of the battle
 
 ##### Base Damage
@@ -59,6 +87,8 @@
   - MaxHealth
   - MissingHealth
   - Health
+  - MaxMana
+  - Mana
   - Strength
   - Intelligence
   - Archery
