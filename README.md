@@ -28,34 +28,34 @@
 Repeat
 
 ### Stats
-- Health, How much Damage you can take
-- Mana, Used up by abilities
+- health, How much Damage you can take
+- mana, Used up by abilities
 
-- Strength, incresases Strength attacks
-- Intelligence, increases Magic attacks
-- Archery, increases Bow and Crossbow attacks
-- Scoundrel, increases Stealthed attacks
+- strength, incresases Strength attacks
+- intelligence, increases Magic attacks
+- archery, increases Bow and Crossbow attacks
+- scoundrel, increases Stealthed attacks
 
-- Defense, decreases physical damage attacks
-- Magic Defense, decreases magic damage attacks
+- defense, decreases physical damage attacks
+- magic_defense, decreases magic damage attacks
 
-- Precision, increases your critical hit chance by 1% per point
-- Speed, gives you an earlier place in the turn hierarchy
+- precision, increases your critical hit chance by 1% per point
+- speed, gives you an earlier place in the turn hierarchy
 
 #### Rough calculations how much every stat is worth
-- Health: 1 powerlevel = 4 health
-- Mana: 1 powerlevel = 4 health
-- Strength, Intelligence, Archery, Scoundrel: 1 powerlevel = 3 points
-- Defense, Magic Defense: 1 powerlevel = 5 points
-- Precision 1 powerlevel = 0.5 precision
-- Speed: 1 powerlevel = 1 speed
+- health: 1 powerlevel = 4 health
+- mana: 1 powerlevel = 4 health
+- strength, Intelligence, Archery, Scoundrel: 1 powerlevel = 3 points
+- defense, Magic Defense: 1 powerlevel = 5 points
+- precision 1 powerlevel = 0.5 precision
+- speed: 1 powerlevel = 1 speed
 
 
 ### Items
-- Name = Filename*
-- Description, backstory of the item, how it should be used*
-- Rarity, options: common, rare, epic, legendary, unobtainable*
-- Position, options: head, chest, legs, feet, primary, secondary*
+- name = Filename*
+- description, backstory of the item, how it should be used*
+- rarity, options: common, rare, epic, legendary, unobtainable*
+- position, options: head, chest, legs, feet, primary, secondary*
 
 
 ##### Stats granted, Items can grant any amount of the stats there
@@ -64,29 +64,29 @@ Repeat
 *required
 
 #### Rarities and Droprates
-- Legendary 1% chance, powerlevel = ~100
-- Epic 10% chance, powerlevel = ~80
-- Rare 30% chance, powerlevel = ~60
-- Common 59% chance, powerlevel = ~40
+- legendary 1% chance, powerlevel = ~100
+- epic 10% chance, powerlevel = ~80
+- rare 30% chance, powerlevel = ~60
+- common 59% chance, powerlevel = ~40
 
 ### Abilities
-- Name = Filename*
-- Description, small description of what the ability does*
-- Damagetype = options: physical, magic, absolute or mixed*
-- Abilitytype = passive, enemy, ally, any, (random, enemy|ally|all, amount of targets), enemyall, allyall, all*
+- name = Filename*
+- description, small description of what the ability does*
+- damagetype = options: physical, magic, absolute or mixed*
+- abilitytype = passive, enemy, ally, any, (random, enemy|ally|all, amount of targets), enemyall, allyall, all*
 
-- Energycost: How much energy it costs to use this ability*
-- Manacost: How much mana it costs to use this ability
-- Healthcost: How much health it costs to use this ability
+- energycost: How much energy it costs to use this ability*
+- manacost: How much mana it costs to use this ability
+- healthcost: How much health it costs to use this ability
 
 ##### Important: Passive Abilities are special, they do not deal any direct damage and just apply all the effects at the beginning of the battle
 
 ##### Base Damage
 
 ##### Scalings: Times the amount this stat is calculated, for example 0.5 if you want the damage to increase by 50% of a certain stat
-  - MaxHealth
-  - MissingHealth
-  - Health
+  - max_health
+  - missing_health
+  - health
   - MaxMana
   - Mana
   - Strength
@@ -100,18 +100,18 @@ Repeat
 
 ###### . only reccomended if you know what you are doing
 
-###### Important: Scalings can also work on the target, just instead of writing "MaxHealth" write "targetMaxHealth"
+###### Important: Scalings can also work on the target, just instead of writing "max_health" write "target_max_health"
 
 ##### Crittable:
-  - CritChance: for example 0.5 if there is a 50% crit chance, increases with precision
-  - LowerLimit: times how much the damage is calculated atleast, for example 2 for 200% damage
-  - UpperLimit: times how much the damage is calculated atmost, for example 3 for 300% damage
+  - crit_chance: for example 0.5 if there is a 50% crit chance, increases with precision
+  - lower_limit: times how much the damage is calculated atleast, for example 2 for 200% damage
+  - upper_limit: times how much the damage is calculated atmost, for example 3 for 300% damage
 
 
 ##### Effects applied in an array - Every effect is written in a seperate array like so:
- 0. Effectname
- 1. Effectduration
- 2. Chance to Apply the effect
+ 0. effectname
+ 1. effectduration
+ 2. chance to Apply the effect
 
 
 *required
@@ -126,9 +126,9 @@ Repeat
 ### Effects
 ##### Effects are coded inside of python and therefor harder to create yourself, here is the basic concept:
 
-- Description: What the effect does*
-- Emoji: Emoji used for visual representation of the effect*
-- Stackable: false|partial|full
+- description: What the effect does*
+- emoji: Emoji used for visual representation of the effect*
+- stackable: false|partial|full
 
 - EVENT start:
 - What the effect does with the target when it's first applied
