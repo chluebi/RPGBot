@@ -18,12 +18,12 @@
 
 - According to the speeds of the different characters, the order gets decided
 - Each characters takes their turn:
-⋅⋅* Start of Turn effect applies
-⋅⋅* The character is refilled with 20% of their Mana
-..* The character gets 3 action points
-⋅⋅* The character uses their abilities
-⋅⋅* The character either uses "endturn" or runs out of time
-⋅⋅* End of Turn effect applies
+  * Start of Turn effect applies
+  * The character is refilled with 20% of their Mana
+  * The character gets 3 action points
+  * The character uses their abilities
+  * The character either uses "endturn" or runs out of time
+  * End of Turn effect applies
 
 Repeat
 
