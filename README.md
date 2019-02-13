@@ -55,7 +55,7 @@ Repeat
 - Name = Filename*
 - Description, backstory of the item, how it should be used*
 - Rarity, options: common, rare, epic, legendary, unobtainable*
-- Position, options: head, chest, legs, feet, primary, secondary
+- Position, options: head, chest, legs, feet, primary, secondary*
 
 
 ##### Stats granted, Items can grant any amount of the stats there
