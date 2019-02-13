@@ -34,8 +34,8 @@
 - Position, options: head, chest, legs, feet, primary, secondary
 
 
-###### Stats granted, Items can grant any amount of the stats there
-###### Abilities granted
+##### Stats granted, Items can grant any amount of the stats there
+##### Abilities granted
 
 *required
 
@@ -51,9 +51,9 @@
 - Damagetype = options: physical, magic, absolute or mixed*
 - Abilitytype = passive, enemy, ally, any, (random, enemy|ally|all, amount of targets), enemyall, allyall, all*
 
-###### Important: Passive Abilities are special, they do not deal any direct damage and just apply all the effects at the beginning of the battle
+##### Important: Passive Abilities are special, they do not deal any direct damage and just apply all the effects at the beginning of the battle
 
-###### Base Damage
+##### Base Damage
 
 ##### Scalings: Times the amount this stat is calculated, for example 0.5 if you want the damage to increase by 50% of a certain stat
   - MaxHealth
@@ -72,7 +72,7 @@
 
 ###### Important: Scalings can also work on the target, just instead of writing "MaxHealth" write "targetMaxHealth"
 
-###### Crittable:
+##### Crittable:
   - CritChance: for example 0.5 if there is a 50% crit chance, increases with precision
   - LowerLimit: times how much the damage is calculated atleast, for example 2 for 200% damage
   - UpperLimit: times how much the damage is calculated atmost, for example 3 for 300% damage
