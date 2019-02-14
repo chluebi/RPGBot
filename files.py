@@ -53,6 +53,7 @@ class User:
             self.stats = {}
             self.save_self()
         self.user = GET.clientuser(self.id)
+        self.status = 'None'
         print(self.__dict__)
 
         core.users.append(self)

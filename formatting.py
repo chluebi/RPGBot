@@ -180,7 +180,43 @@ def alphabet(array):
     return finished
 
 
+def listing(array):
+    if len(array) == 1:
+        endstring = array[0]
+    elif len(array) == 2:
+        endstring = '{} and {}'.format(array[-2], array[-1])
+    elif len(array) > 2:
+        endstring = ', '.join(array[:-2])
+        endstring += ', '
+        endstring += '{} and {}'.format(array[-2], array[-1])
+    else:
+        endstring = '[None]'
+
+    return endstring
+
+
 class Battleembed:
+
+    def pvp(player):
+        return basic('PVP', 'Fight {0.user.mention}!'.format(player))
+
+    def pvp_specific(player, target):
+        return basic('PVP', 'Come on {0.user.mention}: Fight {1.user.mention}!'.format(target, player))
+
+    def timeout():
+        return basic('Timeout', '[Timed out]')
+
+    def raid(players):
+        embed = basic('Raid', 'Join {}!'.format(listing([player.user.mention for player in players])))
+        return embed
+
+    def teambattle(team1, team2):
+        team1 = [player.user.mention for player in team1]
+        team2 = [player.user.mention for player in team2]
+        embed = basic('Team battle', 'Join either Team 1 or Team 2!')
+        embed.add_field(name='Team 1', value=listing(team1), inline=True)
+        embed.add_field(name='Team 2', value=listing(team2), inline=True)
+        return embed
 
     def player_turn(player, allyside, enemyside, history):
         print('------------------------------player embed---------------')

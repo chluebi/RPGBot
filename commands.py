@@ -3,7 +3,7 @@ from social import character_creation
 from social import new_user
 import social
 from files import User
-from battle import new_battle
+from lobby import new_battle
 from battle import Battle
 import formatting as form
 import asyncio
@@ -106,3 +106,8 @@ async def answer(par, msg):
         battle = GET.battle(player.status[1])
         if battle.channel == cha:
             await battle.player_turn(par, msg, player)
+
+    if player.status[0] == 'in lobby':
+        lobby = GET.lobby(player.status[1])
+        if lobby.channel == cha:
+            await lobby.on_message(par, msg, player)
