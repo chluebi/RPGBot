@@ -45,9 +45,9 @@ Repeat
 #### Rough calculations how much every stat is worth
 - health: 1 powerlevel = 4 health
 - mana: 1 powerlevel = 4 health
-- strength, Intelligence, Archery, Scoundrel: 1 powerlevel = 3 points
-- defense, Magic Defense: 1 powerlevel = 5 points
-- precision 1 powerlevel = 0.5 precision
+- strength, intelligence, archery, scoundrel: 1 powerlevel = 3 points
+- defense, magic_defense: 1 powerlevel = 5 points
+- precision: 1 powerlevel = 0.5 precision
 - speed: 1 powerlevel = 1 speed
 
 
@@ -128,6 +128,7 @@ Repeat
 
 - description: What the effect does*
 - emoji: Emoji used for visual representation of the effect*
+- cleansable: true|false
 - stackable: false|partial|full
 
 - EVENT start:
@@ -145,6 +146,9 @@ Repeat
 - EVENT on_attacked:
 - When the target is attacked by an enemy. This takes place before the attack is actualy applied and can therefore render an attack useless.
 
+- EVENT target_dies:
+- When the target dies whilst still having the effect. This triggers BEFORE the target actually dies and can therefore for example heal the target back to full health.
+
 - EVENT end:
 - When the effect stops after its duration. This does not trigger when the effect is removed by a cleanse effect.
 
@@ -152,10 +156,53 @@ Repeat
 - When the effect stops in any way. This DOES trigger when the effect is removed by a cleanse effect.
 
 
-### On the topic of stackable effects
+#### On the topic of cleansable effects
+If an effect is uncleansable, there is practically no counterplay and that's why I advise most abilities to be cleansable. But if for example it's a passive effect on a boss which makes the boss explode at the end of the battle, then we need this metric.
+
+
+#### On the topic of stackable effects
 What does it mean for an effect to be stackable? Let's say you have a target which is suffering under "bleed" for the next 2 turns. Now if you use a new ability with bleed for 4 turns on the target what happens?⋅⋅⋅⋅
 
 - false: The current target's instance of (bleed, 2) gets replaced by (bleed, 4)
 - partial: The target has now two instances of bleed, one being (bleed, 2) and the other (bleed, 4)
 - full: The target has now two instances of bleed, both being (bleed, 4)
+
+### Enemies
+
+name = filename*
+description: A small backstory of the enemy of maybe a tip what the enemy's weakness is.
+
+abilities: all the abilities the enemy can use*
+
+stats: refer to "Stats"*
+##### Stats are written in two part arrays or else the enemy won't scale!
+
+drops:
+- gold
+- xp
+- special gear, etc
+
+##### Droprates are written like so: If an enemy drops 100 gold, you write "gold":100, if the enemy has a 10% chance to drop the mastersword, you write "mastersword":0.1
+
+##### If a player dies during battle, they won't get any of the item drops they collected!
+
+#### Enemy Stats and Scaling
+How scaling works: Every Stat of the Enemy is a 2 part array:
+(basevalue, scaling)
+Enemies have to scale with the player to put up a tough enough challenge, that's why with every level they get, the enemy gets stronger. Values are calculated like so:
+
+basevalue + scaling * level
+
+#### Enemy AI
+For the most common enemies, the AI is handwritten with a bit of Randomness mixxed in. Some enemies might behave completely randomly, others will use their abilities at the perfect moment.
+
+
+### PvE Battles
+All Battles take place in a certain Area. In the file structure this means that every battle is in a subfolder. Some Areas will feature randomly generated Enemies, but others (for example the Tutorial) are rigidly defined like so:
+
+rarity: the higher, the more likely it is that players will stumble upon this battle, -1 means unfindable without a manual search
+min_level: the lowest level players can have to stumble upon this battle, -1 means everyone can play it
+enemies: an array of enemies, they will automatically be scaled
+
+
 
