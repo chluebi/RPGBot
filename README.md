@@ -170,7 +170,8 @@ What does it mean for an effect to be stackable? Let's say you have a target whi
 ### Enemies
 
 name = filename*
-description: A small backstory of the enemy of maybe a tip what the enemy's weakness is.
+description: A small backstory of the enemy of maybe a tip what the enemy's weakness is.*
+powerlevel: An approximate value of how strong the enemy is. A 20 health enemy dealing 5 damage on level 1, is powerlevel 20.
 
 abilities: all the abilities the enemy can use*
 
