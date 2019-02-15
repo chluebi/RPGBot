@@ -87,14 +87,14 @@ Repeat
   - max_health
   - missing_health
   - health
-  - MaxMana
-  - Mana
-  - Strength
-  - Intelligence
-  - Archery
-  - Scoundrel
-  - Defense
-  - Magic Defense
+  - max_mana
+  - mana
+  - strength
+  - intelligence
+  - archery
+  - scoundrel
+  - defense
+  - magic Defense
   - .Precision
   - .Speed
 
